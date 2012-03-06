@@ -194,31 +194,30 @@ __bash_shortcuts ()
     '
 }
 
+# This function allows you to browse the internet through another IP (that
+# you have access to).
+#
+# = INSTRUCTIONS =
+#
+# I. Setup
+#
+# 1. create a profile in Firefox called "tunnel" (can be done on first call of this fn)
+# 2. Change network settings to have manual proxy with SOCKS Host as localhost on port 1080
+#
+# II. Usage
+#
+# 1. Run `ssh -CND 1080 user@remoteserver.com` and leave that command open
+# 2. Run this function, `__firefox_tunnel`
+#
+# III. Tips
+#
+# 1. make an alias for this function: alias='fftunnel'
+# 2. make an alias for the SSH command: alias='ssh -CDN user@remoteserver.com`
+# 3. don't add a '&' on the end and leave SSH open so you can kill it, and
+#   if the connection drops you won't have 50 million SSH connections running
+#
 __firefox_tunnel ()
 {
-    # This function allows you to browse the internet through another IP (that
-    # you have access to).
-    #
-    # = INSTRUCTIONS =
-    #
-    # I. Setup
-    #
-    # 1. create a profile in Firefox called "tunnel" (can be done on first call of this fn)
-    # 2. Change network settings to have manual proxy with SOCKS Host as localhost on port 1080
-    #
-    # II. Usage
-    #
-    # 1. Run `ssh -CDN 1080 user@remoteserver.com` and leave that command open
-    # 2. Run this function, `__firefox_tunnel`
-    #
-    # III. Tips
-    #
-    # 1. make an alias for this function: alias='fftunnel'
-    # 2. make an alias for the SSH command: alias='ssh -CDN user@remoteserver.com`
-    # 3. don't add a '&' on the end and leave SSH open so you can kill it, and
-    #   if the connection drops you won't have 50 million SSH connections running
-    #
-
     if [ -x '/Applications/Firefox.app/Contents/MacOS/firefox-bin' ]; then
         `/Applications/Firefox.app/Contents/MacOS/firefox-bin -P tunnel -no-remote`
     fi
@@ -228,5 +227,31 @@ __firefox ()
 {
     if [ -x '/Applications/Firefox.app/Contents/MacOS/firefox-bin' ]; then
         `/Applications/Firefox.app/Contents/MacOS/firefox-bin -P default -no-remote`
+    fi
+}
+
+# Usage:
+# __copy_dotfiles user@server.com:
+#
+# TODO: make interactive
+__copy_dotfiles ()
+{
+
+    if [ -z "$1" ]
+    then
+        printf "You must specify the server to copy to, i.e. user@server.com:.\n\n\t* NOTE: you will want to keep the ':' to copy to the user's home directory.\n\n"
+        exit
+    else
+        echo "Copying files to $1..."
+        sleep 2 # just to give you time to panic and hit CTRL+C
+        scp ~/.bashrc $1
+        scp ~/.bash_profile $1
+        scp ~/.profile $1
+        scp -r ~/.bash_includes $1
+        scp -r ~/.vim $1
+        scp ~/.vimrc $1
+        scp -r ~/.gitconfig $1
+        scp -r ~/.gitignore $1
+        scp -r ~/.inputrc $1
     fi
 }

@@ -7,10 +7,13 @@ else
 fi
 
 if [ "$BASH_PROMPT_TYPE" -eq 1 ]; then
+    # purple/magenta
     export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
 elif [ "$BASH_PROMPT_TYPE" -eq 2 ]; then
+    # yellow
     export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
 else
-    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    # green
+    export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
 fi
 
