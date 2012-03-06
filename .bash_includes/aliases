@@ -1,0 +1,70 @@
+# .aliases
+#
+# Core aliases and functions
+#
+
+# LAMP Shortcuts
+alias a2modules='httpd -t -D DUMP_MODULES' # need to move to __apache_aliases and make OS dependent
+alias a2log='tail -f /var/log/apache2/error_log' # need to move to __apache_aliases and make OS dependent
+alias mysqlstart='sudo mysqld_safe &'
+alias mysqlstop='mysqladmin -u root -p shutdown'
+#sudo launchctl unload -w /Library/LaunchDaemons/org.macports.mysql.plist
+#sudo launchctl load -w /Library/LaunchDaemons/org.macports.mysql.plist
+alias cathosts='cat /etc/hosts'
+alias vimhosts='sudo vim /etc/hosts'
+alias vimhttpd='sudo vim /etc/apache2/httpd.conf'
+alias vimvhosts='vim /Users/Shared/vhosts.conf'
+alias vimphp='sudo vim /etc/php.ini'
+__mysql5_aliases
+__apache_aliases
+
+# Application Shortcuts
+#alias ff=`__firefox` # open ff from command line
+#alias fftunnel=`__firefox_tunnel` # tunnel
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias la='ls -lha'
+alias ll='ls -lha'
+alias rgrep='grep -Rn' # recursive grep and show line number
+alias passgen='echo "Options:
+    -m Length of password
+    -n Number of passwords
+
+Generating 6 passwords 32 characters long:
+"; apg -M SNCL -m 32'
+#alias passgen='apg -M SNCL -m'
+alias reloadbashrc='source ~/.bashrc'
+alias reloadbash='source ~/.bashrc'
+
+# Mac OS X
+if [ `uname -s` = 'Darwin' ]; then
+    alias gvim='open -a /Applications/Vim.app/Contents/MacOS/MacVim' # open MacVim from command line
+    alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
+    alias hidedesktopicons='defaults write com.apple.finder CreateDesktop -bool false'
+    alias showdesktopicons='defaults write com.apple.finder CreateDesktop -bool true'
+    alias showhiddenfiles='defaults write com.apple.finder AppleShowAllFiles -bool true'
+    alias hidehiddenfiles='defaults write com.apple.finder AppleShowAllFiles -bool false'
+fi
+
+# Vim Shortcuts
+alias vimbash='vim ~/.bashrc'
+alias vimprofile='vim ~/.profile'
+alias vimrc='sudo vim ~/.vimrc'
+
+# CD shortcuts
+alias cdbin='cd /usr/local/bin;pwd'
+alias cdmount='cd /opt/mount;pwd'
+# <WordPress>
+alias cdthemes='cd ./wp-content/themes;pwd'
+alias cdplugins='cd ./wp-content/plugins;pwd'
+
+# Mounting Shortcuts
+# Example (MacOSX):
+# alias mnthome='sshfs user@user-server:/opt/bup/user-laptop/home/user ~/home/'
+# alias umnthome='diskutil unmount force ~/home/'
+
+# SSH Shortcuts
+# Example:
+# alias sshsrv='ssh user@user-desktop'
+

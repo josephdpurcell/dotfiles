@@ -1,0 +1,22 @@
+# -*- mode: conf -*-
+
+# =================================
+# Bash Terminal Input Configuration
+# =================================
+#
+# :Author: Bill Purcell
+# :Email: william@whpiv.net
+# :Date: April 1, 2011
+#
+# Up will go back one command.
+
+"\e[A":history-search-backward
+
+# Down will go forward one command.
+
+"\e[B":history-search-forward
+
+# Ignore case while completing a filepath.
+
+set completion-ignore-case On
+

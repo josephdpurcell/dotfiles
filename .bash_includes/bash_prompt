@@ -1,0 +1,16 @@
+# .bash_prompt
+
+if [ "`declare -f __set_bash_prompt_type > /dev/null; echo $?`" -eq 0 ]; then
+    __set_bash_prompt_type
+else
+    BASH_PROMPT_TYPE=99
+fi
+
+if [ "$BASH_PROMPT_TYPE" -eq 1 ]; then
+    export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+elif [ "$BASH_PROMPT_TYPE" -eq 2 ]; then
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+else
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+fi
+

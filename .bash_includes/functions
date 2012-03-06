@@ -1,0 +1,232 @@
+
+function __mysqlimport ()
+{
+    echo "mysql -u root -p the_database < file_to_import.sql"
+}
+
+__list_colors ()
+{
+    # Regular Fonts
+    txtblk='\e[0;30m' # Black
+    txtred='\e[0;31m' # Red
+    txtgrn='\e[0;32m' # Green
+    txtylw='\e[0;33m' # Yellow
+    txtblu='\e[0;34m' # Blue
+    txtpur='\e[0;35m' # Purple
+    txtcyn='\e[0;36m' # Cyan
+    txtwht='\e[0;37m' # White
+    # Bold Fonts
+    bldblk='\e[1;30m' # Black
+    bldred='\e[1;31m' # Red
+    bldgrn='\e[1;32m' # Green
+    bldylw='\e[1;33m' # Yellow
+    bldblu='\e[1;34m' # Blue
+    bldpur='\e[1;35m' # Purple
+    bldcyn='\e[1;36m' # Cyan
+    bldwht='\e[1;37m' # White
+    # Underline Fonts
+    unkblk='\e[4;30m' # Black
+    undred='\e[4;31m' # Red
+    undgrn='\e[4;32m' # Green
+    undylw='\e[4;33m' # Yellow
+    undblu='\e[4;34m' # Blue
+    undpur='\e[4;35m' # Purple
+    undcyn='\e[4;36m' # Cyan
+    undwht='\e[4;37m' # White
+    # Backgrounds
+    bakblk='\e[40m'   # Black
+    bakred='\e[41m'   # Red
+    bakgrn='\e[42m'   # Green
+    bakylw='\e[43m'   # Yellow
+    bakblu='\e[44m'   # Blue
+    bakpur='\e[45m'   # Purple
+    bakcyn='\e[46m'   # Cyan
+    bakwht='\e[47m'   # White
+    txtrst='\e[0m'    # Text Reset
+
+    echo "Regular Fonts:"
+    echo $txtblk'	Black'
+    echo $txtred'	Red'
+    echo $txtgrn'	Green'
+    echo $txtylw'	Yellow'
+    echo $txtblu'	Blue'
+    echo $txtpur'	Purple'
+    echo $txtcyn'	Cyan'
+    echo $txtwht'	White'
+
+    echo "Bold Fonts:"
+    echo $bldblk'	Black'
+    echo $bldred'	Red'
+    echo $bldgrn'	Green'
+    echo $bldylw'	Yellow'
+    echo $bldblu'	Blue'
+    echo $bldpur'	Purple'
+    echo $bldcyn'	Cyan'
+    echo $bldwht'	White'
+
+    echo "Underline Fonts:"
+    echo $unkblk'	Black'
+    echo $undred'	Red'
+    echo $undgrn'	Green'
+    echo $undylw'	Yellow'
+    echo $undblu'	Blue'
+    echo $undpur'	Purple'
+    echo $undcyn'	Cyan'
+    echo $undwht'	White'
+
+    echo "Backgrounds:"
+    echo $bakblk'		Black'
+    echo $bakred'		Red'
+    echo $bakgrn'		Green'
+    echo $bakylw'		Yellow'
+    echo $bakblu'		Blue'
+    echo $bakpur'		Purple'
+    echo $bakcyn'		Cyan'
+    echo $bakwht'		White'
+    echo $txtrst'		Text Reset'
+}
+
+__mysql5_aliases ()
+{
+    # Make aliases for MySQL 5
+    if which mysql &> /dev/null; then
+        # no aliases are needed, because mysql is avail
+        return
+    else
+        alias my_print_defaults='my_print_defaults5'
+        alias myisam_ftdump='myisam_ftdump5'
+        alias myisamchk='myisamchk5'
+        alias myisamlog='myisamlog5'
+        alias myisampack='myisampack5'
+        alias mysql='mysql5'
+        alias mysql_client_test='mysql_client_test5'
+        alias mysql_client_test_embedded='mysql_client_test_embedded5'
+        alias mysql_config='mysql_config5'
+        alias mysql_convert_table_format='mysql_convert_table_format5'
+        alias mysql_find_rows='mysql_find_rows5'
+        alias mysql_fix_extensions='mysql_fix_extensions5'
+        alias mysql_fix_privilege_tables='mysql_fix_privilege_tables5'
+        alias mysql_install_db='mysql_install_db5'
+        alias mysql_secure_installation='mysql_secure_installation5'
+        alias mysql_setpermission='mysql_setpermission5'
+        alias mysql_tzinfo_to_sql='mysql_tzinfo_to_sql5'
+        alias mysql_upgrade='mysql_upgrade5'
+        alias mysql_waitpid='mysql_waitpid5'
+        alias mysql_zap='mysql_zap5'
+        alias mysqlaccess='mysqlaccess5'
+        alias mysqladmin='mysqladmin5'
+        alias mysqlbinlog='mysqlbinlog5'
+        alias mysqlbug='mysqlbug5'
+        alias mysqlcheck='mysqlcheck5'
+        alias mysqld_multi='mysqld_multi5'
+        alias mysqld_safe='mysqld_safe5'
+        alias mysqldump='mysqldump5'
+        alias mysqldumpslow='mysqldumpslow5'
+        alias mysqlhotcopy='mysqlhotcopy5'
+        alias mysqlimport='mysqlimport5'
+        alias mysqlshow='mysqlshow5'
+        alias mysqlslap='mysqlslap5'
+        alias mysqltest='mysqltest5'
+        alias mysqltest_embedded='mysqltest_embedded5'
+    fi
+}
+
+__apache_aliases ()
+{
+    if which apachectl &> /dev/null; then
+        alias a2restart='sudo apachectl restart'
+    else
+        alias a2restart='sudo /etc/init.d/http restart'
+    fi
+}
+
+__bash_shortcuts ()
+{
+    echo '
+    ____________CTRL Key Bound_____________
+    Ctrl + a - Jump to the start of the line
+    Ctrl + b - Move back a char
+    Ctrl + c - Terminate the command
+    Ctrl + d - Delete from under the cursor
+    Ctrl + e - Jump to the end of the line
+    Ctrl + f - Move forward a char
+    Ctrl + k - Delete to EOL
+    Ctrl + l - Clear the screen
+    Ctrl + r - Search the history backwards
+    Ctrl + R - Search the history backwards with multi occurrence
+    Ctrl + u - Delete backward from cursor
+    Ctrl + xx - Move between EOL and current cursor position
+    Ctrl + x @ - Show possible hostname completions
+    Ctrl + z - Suspend/ Stop the command
+
+    ____________ALT Key Bound___________
+    Alt + < - Move to the first line in the history
+    Alt + > - Move to the last line in the history
+    Alt + ? - Show current completion list
+    Alt + * - Insert all possible completions
+    Alt + / - Attempt to complete filename
+    Alt + . - Yank last argument to previous command
+    Alt + b - Move backward
+    Alt + c - Capitalize the word
+    Alt + d - Delete word
+    Alt + f - Move forward
+    Alt + l - Make word lowercase
+    Alt + n - Search the history forwards non-incremental
+    Alt + p - Search the history backwards non-incremental
+    Alt + r - Recall command
+    Alt + t - Move words around
+    Alt + u - Make word uppercase
+    Alt + back-space - Delete backward from cursor
+
+    ----------------More Special Keybindings-------------------
+
+    Here "2T" means Press TAB twice
+
+    $ 2T - All available commands(common)
+    $ (string)2T - All available commands starting with (string)
+    $ /2T - Entire directory structure including Hidden one
+    $ 2T - Only Sub Dirs inside including Hidden one
+    $ *2T - Only Sub Dirs inside without Hidden one 
+    $ ~2T - All Present Users on system from "/etc/passwd"
+    $ $2T - All Sys variables
+    $ @2T - Entries from "/etc/hosts"
+    $ =2T - Output like ls or dir
+    '
+}
+
+__firefox_tunnel ()
+{
+    # This function allows you to browse the internet through another IP (that
+    # you have access to).
+    #
+    # = INSTRUCTIONS =
+    #
+    # I. Setup
+    #
+    # 1. create a profile in Firefox called "tunnel" (can be done on first call of this fn)
+    # 2. Change network settings to have manual proxy with SOCKS Host as localhost on port 1080
+    #
+    # II. Usage
+    #
+    # 1. Run `ssh -CDN 1080 user@remoteserver.com` and leave that command open
+    # 2. Run this function, `__firefox_tunnel`
+    #
+    # III. Tips
+    #
+    # 1. make an alias for this function: alias='fftunnel'
+    # 2. make an alias for the SSH command: alias='ssh -CDN user@remoteserver.com`
+    # 3. don't add a '&' on the end and leave SSH open so you can kill it, and
+    #   if the connection drops you won't have 50 million SSH connections running
+    #
+
+    if [ -x '/Applications/Firefox.app/Contents/MacOS/firefox-bin' ]; then
+        `/Applications/Firefox.app/Contents/MacOS/firefox-bin -P tunnel -no-remote`
+    fi
+}
+
+__firefox ()
+{
+    if [ -x '/Applications/Firefox.app/Contents/MacOS/firefox-bin' ]; then
+        `/Applications/Firefox.app/Contents/MacOS/firefox-bin -P default -no-remote`
+    fi
+}
