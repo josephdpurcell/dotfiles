@@ -1,0 +1,8 @@
+# .aliases_networking
+#
+
+alias dns_dump='sudo tcpdump -i en1 "udp port 53"'
+alias http_dump='sudo tcpdump -i en1 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)"';
+alias telnet_https='openssl s_client -connect stmts.chase.com:443'
+alias ping8='ping 8.8.8.8'
+alias pingg='ping www.google.com'

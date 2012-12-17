@@ -86,60 +86,6 @@ __list_colors ()
     echo $txtrst'		Text Reset'
 }
 
-__mysql5_aliases ()
-{
-    # Make aliases for MySQL 5
-    if which mysql &> /dev/null; then
-        # no aliases are needed, because mysql is avail
-        return
-    else
-        alias my_print_defaults='my_print_defaults5'
-        alias myisam_ftdump='myisam_ftdump5'
-        alias myisamchk='myisamchk5'
-        alias myisamlog='myisamlog5'
-        alias myisampack='myisampack5'
-        alias mysql='mysql5'
-        alias mysql_client_test='mysql_client_test5'
-        alias mysql_client_test_embedded='mysql_client_test_embedded5'
-        alias mysql_config='mysql_config5'
-        alias mysql_convert_table_format='mysql_convert_table_format5'
-        alias mysql_find_rows='mysql_find_rows5'
-        alias mysql_fix_extensions='mysql_fix_extensions5'
-        alias mysql_fix_privilege_tables='mysql_fix_privilege_tables5'
-        alias mysql_install_db='mysql_install_db5'
-        alias mysql_secure_installation='mysql_secure_installation5'
-        alias mysql_setpermission='mysql_setpermission5'
-        alias mysql_tzinfo_to_sql='mysql_tzinfo_to_sql5'
-        alias mysql_upgrade='mysql_upgrade5'
-        alias mysql_waitpid='mysql_waitpid5'
-        alias mysql_zap='mysql_zap5'
-        alias mysqlaccess='mysqlaccess5'
-        alias mysqladmin='mysqladmin5'
-        alias mysqlbinlog='mysqlbinlog5'
-        alias mysqlbug='mysqlbug5'
-        alias mysqlcheck='mysqlcheck5'
-        alias mysqld_multi='mysqld_multi5'
-        alias mysqld_safe='mysqld_safe5'
-        alias mysqldump='mysqldump5'
-        alias mysqldumpslow='mysqldumpslow5'
-        alias mysqlhotcopy='mysqlhotcopy5'
-        alias mysqlimport='mysqlimport5'
-        alias mysqlshow='mysqlshow5'
-        alias mysqlslap='mysqlslap5'
-        alias mysqltest='mysqltest5'
-        alias mysqltest_embedded='mysqltest_embedded5'
-    fi
-}
-
-__apache_aliases ()
-{
-    if which apachectl &> /dev/null; then
-        alias a2restart='sudo apachectl restart'
-    else
-        alias a2restart='sudo /etc/init.d/http restart'
-    fi
-}
-
 __bash_shortcuts ()
 {
     echo '
@@ -234,24 +180,277 @@ __firefox ()
 # __copy_dotfiles user@server.com:
 #
 # TODO: make interactive
-__copy_dotfiles ()
+__scp_dotfiles ()
 {
+    local ALL="false"
+    local USER_HOME=`echo ~`
+    local BASE_FILES=".bashrc .bash_profile .profile .bash_includes .vim .vimrc .gitconfig .gitignore .inputrc"
+	local SERVER=`echo "$1" | sed "s/:.*$//g"`
+	local REMOTE_PATH=":"
+
+    if [ -z "$1" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
+    then
+		echo "Usage:"
+		echo "__scp_dotfiles user@server.com:"
+		exit 1
+    else
+		echo "Getting list of dot files..."
+		FILES=""
+        for x in $BASE_FILES
+        do
+			if [ -f "$x" ] || [ -d "$x" ]
+			then
+				echo "    "$x
+				FILES=$FILES" $x"
+			fi
+		done
+
+        echo "Copying dot files to $SERVER..."
+        for x in $FILES
+        do
+            COPY="false"
+            x="$USER_HOME/$x"
+            if [ "$ALL" = "true" ]; then
+                answer="y"
+            else
+                read -p "Do you want to copy $x? " answer
+            fi
+
+            case "$answer" in
+                [yY1] | 'yes' )
+                    COPY="yes";;
+                [nN0] | 'no' )
+                    echo "Skipping $x";;
+                [aA] | 'all' )
+                    echo "Copying all"
+                    COPY="yes"
+                    ALL="true";;
+                [xXeE] | 'exit' )
+                    echo "Exiting";
+					return 1;;
+                * )
+                    echo "Invalid response";
+					return 1;;
+            esac
+
+            if [ "$COPY" = "yes" ]; then
+                if [ -f $x ]; then
+                    scp $x $SERVER$REMOTE_PATH
+                elif [ -d $x ]; then
+                    scp -r $x $SERVER$REMOTE_PATH
+                else
+                    echo "FATAL ERROR: file not found";
+					return 1;
+                    break;
+                fi
+            fi
+        done
+    fi
+	echo "Done"
+	return
+}
+__scp_dotfiles_beta ()
+{
+    local ALL="false"
+    local USER_HOME=`echo ~`
+    local FILES=".bashrc .bash_profile .profile .bash_includes .vim .vimrc .gitconfig .gitignore .inputrc"
+    local COPY_SUBDIR="false"
 
     if [ -z "$1" ]
     then
         printf "You must specify the server to copy to, i.e. user@server.com:.\n\n\t* NOTE: you will want to keep the ':' to copy to the user's home directory.\n\n"
-        exit
     else
-        echo "Copying files to $1..."
-        sleep 2 # just to give you time to panic and hit CTRL+C
-        scp ~/.bashrc $1
-        scp ~/.bash_profile $1
-        scp ~/.profile $1
-        scp -r ~/.bash_includes $1
-        scp -r ~/.vim $1
-        scp ~/.vimrc $1
-        scp -r ~/.gitconfig $1
-        scp -r ~/.gitignore $1
-        scp -r ~/.inputrc $1
+        echo "Copying dot files to $1..."
+
+        for x in $FILES
+        do
+            x="$USER_HOME/$x"
+            if [ "$ALL" = "true" ]; then
+                answer="y"
+            else
+                read -p "Do you want to copy $x? " answer
+            fi
+
+            case "$answer" in
+                [yY1] | 'yes' )
+                    if [ -f $x ]; then
+                        scp $x $1
+                    elif [ -d $x ]; then
+                        scp -r $x $1
+                        #COPY_SUBDIR="true"
+                    else
+                        echo "FATAL ERROR: file not found"
+                        break
+                    fi
+                    echo "done";;
+                [nN0] | 'no' )
+                    echo "Skipping $x";;
+                [aA] | 'all' )
+                    echo "Copying all"
+                    ALL="true";;
+                [xXeE] | 'exit' )
+                    echo "Exiting"
+                    break;;
+                * )
+                    echo "Invalid response";;
+            esac
+
+            if [ "$COPY_SUBDIR" = "true" ]; then
+                SUBDIR=$x"/*"
+                for y in $SUBDIR
+                do
+                    if [ "$ALL2" = "true" ]; then
+                        answer2="y"
+                    else
+                        read -p "Do you want to copy $y? " answer2
+                    fi
+
+                    case "$answer2" in
+                        [yY1] | 'yes' )
+                            if [ -f $y ]; then
+                                scp $y $1
+                            elif [ -d $y ]; then
+                                scp -r $y $1
+                            else
+                                echo "FATAL ERROR: file not found"
+                                break
+                            fi;;
+                        [nN0] | 'no' )
+                            echo "Skipping $y";;
+                        [aA] | 'all' )
+                            echo "Copying all"
+                            ALL2="true";;
+                        [xXeE] | 'exit' )
+                            echo "Exiting"
+                            break;;
+                        * )
+                            echo "Invalid response";;
+                    esac
+                done
+            fi
+        done
     fi
+}
+
+# Usage:
+# __copy_dotfiles user@server.com:
+#
+# TODO: make interactive
+__cp_dotfiles ()
+{
+    if [ ! -d "$1" ]
+    then
+        echo "FATAL ERROR: destination is not a directory"
+        return
+    fi
+
+    if [ -z "$1" ]
+    then
+        printf "You must specify the directory to copy to, i.e. /home/user/.\n\n"
+        return
+    else
+        local ALL="false"
+        local ALL2="false"
+        local COPY_SUBDIR="false"
+
+        echo "Copying files to $1 as sudo..."
+        sleep 2 # just to give you time to panic and hit CTRL+C
+        FILES="~/.bashrc ~/.bash_profile ~/.profile ~/.bash_includes ~/.vim ~/.vimrc ~/.gitconfig ~/.gitignore ~/.inputrc"
+        for x in $FILES
+        do
+            if [ "$ALL" = "true" ]; then
+                answer="y"
+            else
+                read -p "Do you want to copy $x? " answer
+            fi
+
+            case "$answer" in
+                [yY1] | 'yes' )
+                    if [ -f "$x" ]; then
+                        cp $x $1
+                    elif [ -d "$x" ]; then
+                        cp -r $x $1
+                        #COPY_SUBDIR="true"
+                    else
+                        echo "FATAL ERROR: file not found: "$x
+                        break
+                    fi
+                    echo "done";;
+                [nN0] | 'no' )
+                    echo "Skipping $x";;
+                [aA] | 'all' )
+                    echo "Copying all"
+                    ALL="true";;
+                [xXeE] | 'exit' )
+                    echo "Exiting"
+                    break;;
+                * )
+                    echo "Invalid response";;
+            esac
+
+            if [ "$COPY_SUBDIR" = "true" ]; then
+                SUBDIR=$x"/*"
+                for y in $SUBDIR
+                do
+                    if [ "$ALL2" = "true" ]; then
+                        answer2="y"
+                    else
+                        read -p "Do you want to copy $y? " answer2
+                    fi
+
+                    case "$answer2" in
+                        [yY1] | 'yes' )
+                            if [ -f $y ]; then
+                                scp $y $1
+                            elif [ -d $y ]; then
+                                scp -r $y $1
+                            else
+                                echo "FATAL ERROR: file not found"
+                                break
+                            fi;;
+                        [nN0] | 'no' )
+                            echo "Skipping $y";;
+                        [aA] | 'all' )
+                            echo "Copying all"
+                            ALL2="true";;
+                        [xXeE] | 'exit' )
+                            echo "Exiting"
+                            break;;
+                        * )
+                            echo "Invalid response";;
+                    esac
+                done
+            fi
+        done
+#        sudo cp ~/.bashrc $1
+#        sudo cp ~/.bash_profile $1
+#        sudo cp ~/.profile $1
+#        sudo cp -v -rv ~/.bash_includes $1
+#        sudo cp -v -rv ~/.vim $1
+#        sudo cp ~/.vimrc $1
+#        sudo cp -v -rv ~/.gitconfig $1
+#        sudo cp -v -rv ~/.gitignore $1
+#        sudo cp -v -rv ~/.inputrc $1
+    fi
+}
+
+__set_bash_prompt_type()
+{
+    local kernel
+    local cpuname
+    kernel=`uname -s`
+    cpuname=`uname -n`
+    if [ "$kernel" = "Darwin" ]; then
+        # change color for Mac
+        BASH_PROMPT_TYPE=2
+    else
+        # change color for Linux
+        BASH_PROMPT_TYPE=3
+    fi
+}
+
+__environment()
+{
+	# I don't remember what I'm doing with this
+	return
 }

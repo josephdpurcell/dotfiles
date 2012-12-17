@@ -3,6 +3,11 @@
 # Core aliases and functions
 #
 
+
+#usermod
+# sudo dscl . -append /groups/wheel GroupMembership joep
+
+
 # LAMP Shortcuts
 alias a2modules='httpd -t -D DUMP_MODULES' # need to move to __apache_aliases and make OS dependent
 alias a2log='tail -f /var/log/apache2/error_log' # need to move to __apache_aliases and make OS dependent
@@ -13,9 +18,61 @@ alias mysqlstop='mysqladmin -u root -p shutdown'
 alias cathosts='cat /etc/hosts'
 alias vimhosts='sudo vim /etc/hosts'
 alias vimhttpd='sudo vim /etc/apache2/httpd.conf'
-alias vimvhosts='vim /Users/Shared/vhosts.conf'
+alias vimvhosts='sudo vim -O /Users/Shared/conf/vhosts.conf /etc/apache2/httpd.conf'
 alias vimphp='sudo vim /etc/php.ini'
+__mysql5_aliases ()
+{
+    # Make aliases for MySQL 5
+    if which mysql &> /dev/null; then
+        # no aliases are needed, because mysql is avail
+        return
+    else
+        alias my_print_defaults='my_print_defaults5'
+        alias myisam_ftdump='myisam_ftdump5'
+        alias myisamchk='myisamchk5'
+        alias myisamlog='myisamlog5'
+        alias myisampack='myisampack5'
+        alias mysql='mysql5'
+        alias mysql_client_test='mysql_client_test5'
+        alias mysql_client_test_embedded='mysql_client_test_embedded5'
+        alias mysql_config='mysql_config5'
+        alias mysql_convert_table_format='mysql_convert_table_format5'
+        alias mysql_find_rows='mysql_find_rows5'
+        alias mysql_fix_extensions='mysql_fix_extensions5'
+        alias mysql_fix_privilege_tables='mysql_fix_privilege_tables5'
+        alias mysql_install_db='mysql_install_db5'
+        alias mysql_secure_installation='mysql_secure_installation5'
+        alias mysql_setpermission='mysql_setpermission5'
+        alias mysql_tzinfo_to_sql='mysql_tzinfo_to_sql5'
+        alias mysql_upgrade='mysql_upgrade5'
+        alias mysql_waitpid='mysql_waitpid5'
+        alias mysql_zap='mysql_zap5'
+        alias mysqlaccess='mysqlaccess5'
+        alias mysqladmin='mysqladmin5'
+        alias mysqlbinlog='mysqlbinlog5'
+        alias mysqlbug='mysqlbug5'
+        alias mysqlcheck='mysqlcheck5'
+        alias mysqld_multi='mysqld_multi5'
+        alias mysqld_safe='mysqld_safe5'
+        alias mysqldump='mysqldump5'
+        alias mysqldumpslow='mysqldumpslow5'
+        alias mysqlhotcopy='mysqlhotcopy5'
+        alias mysqlimport='mysqlimport5'
+        alias mysqlshow='mysqlshow5'
+        alias mysqlslap='mysqlslap5'
+        alias mysqltest='mysqltest5'
+        alias mysqltest_embedded='mysqltest_embedded5'
+    fi
+}
 __mysql5_aliases
+__apache_aliases ()
+{
+    if which apachectl &> /dev/null; then
+        alias a2restart='sudo apachectl restart'
+    else
+        alias a2restart='sudo /etc/init.d/httpd restart'
+    fi
+}
 __apache_aliases
 
 # Application Shortcuts
@@ -24,8 +81,12 @@ __apache_aliases
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias la='ls -lha'
-alias ll='ls -lha'
+alias ls='ls -G'
+alias ll='ls -lhaG'
+alias la='ls -1G'
+alias laa='ls -A1G'
+alias lss='ls -lhasG'
+alias lm='ls -lhamG'
 alias rgrep='grep -Rn' # recursive grep and show line number
 alias passgen='echo "Options:
     -m Length of password
@@ -37,16 +98,6 @@ Generating 6 passwords 32 characters long:
 alias reloadbashrc='source ~/.bashrc'
 alias reloadbash='source ~/.bashrc'
 
-# Mac OS X
-if [ `uname -s` = 'Darwin' ]; then
-    alias gvim='open -a /Applications/Vim.app/Contents/MacOS/MacVim' # open MacVim from command line
-    alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
-    alias hidedesktopicons='defaults write com.apple.finder CreateDesktop -bool false'
-    alias showdesktopicons='defaults write com.apple.finder CreateDesktop -bool true'
-    alias showhiddenfiles='defaults write com.apple.finder AppleShowAllFiles -bool true'
-    alias hidehiddenfiles='defaults write com.apple.finder AppleShowAllFiles -bool false'
-fi
-
 # Vim Shortcuts
 alias vimbash='vim ~/.bashrc'
 alias vimprofile='vim ~/.profile'
@@ -55,6 +106,7 @@ alias vimrc='sudo vim ~/.vimrc'
 # CD shortcuts
 alias cdbin='cd /usr/local/bin;pwd'
 alias cdmount='cd /opt/mount;pwd'
+alias cdrepos='cd /usr/local/share;pwd'
 # <WordPress>
 alias cdthemes='cd ./wp-content/themes;pwd'
 alias cdplugins='cd ./wp-content/plugins;pwd'
@@ -67,4 +119,5 @@ alias cdplugins='cd ./wp-content/plugins;pwd'
 # SSH Shortcuts
 # Example:
 # alias sshsrv='ssh user@user-desktop'
+alias sshl='alias | grep "alias ssh.*=" | grep -v "alias sshl="'
 

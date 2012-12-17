@@ -1,10 +1,26 @@
 # .bashrc
 #
 # TODO: make a for loop for sourcing bash includes
+# TODO: make a notification in the prompt when looking in folders in a 'www' or 'vhosts' folder
+##
+# Your previous /Volumes/Data/Users/jpurcell/.bash_profile file was backed up as /Volumes/Data/Users/jpurcell/.bash_profile.macports-saved_2012-12-03_at_16:49:10
+##
 
 umask 002
 
-export PATH=$PATH:/opt/local/bin
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+#export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
+export PATH=$PATH:/usr/bin
+export PATH=$PATH:~/bin
+export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
+export PATH=$PATH:/usr/local/mysql/bin
+export PATH=$PATH:/usr/local/share/pear/bin
+
+export APPLICATION_ENV='development'
+
+# have grep highlight words found
+export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
+export GREP_OPTIONS='--color=auto'
 
 export EDITOR=vim
 export VISUAL=vim
@@ -14,50 +30,36 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-# Source bash_includes
+#
+# Core
+#
 
-if [ -f ~/.bash_includes/git-completion.bash ]; then
-    source ~/.bash_includes/git-completion.bash
+if [ ! -f ~/.inputrc ]; then
+    echo "WARNING: .inputrc is not in your home directory!"
 fi
 
-if [ -f ~/inputrc ]; then
-    source ~/.bash_includes/inputrc
-fi
+#
+# Includes (except for the prompt, we do that last)
+#
+for x in ~/.bash_includes/*
+do
+	SHORT=`echo $x | sed "s/.*\///g"`
+	if [ "$SHORT" != "bash_prompt" ]
+	then
+		source $x
+	fi
+done
 
-if [ -f ~/.bash_includes/functions ]; then
-    source ~/.bash_includes/functions
-fi
-
-if [ -f ~/.bash_includes/functions_work ]; then
-    source ~/.bash_includes/functions_work
-fi
-
-if [ -f ~/.bash_includes/aliases ]; then
-    source ~/.bash_includes/aliases
-fi
-
-if [ -f ~/.bash_includes/aliases_work ]; then
-    source ~/.bash_includes/aliases_work
-fi
-
-if [ -f ~/.bash_includes/aliases_home ]; then
-    source ~/.bash_includes/aliases_home
-fi
+#
+# Bash Prompt
+#
 
 if [ -f ~/.bash_includes/bash_prompt ]; then
     source ~/.bash_includes/bash_prompt
 fi
 
-# Source bash includes
-#if [ -d ~/.bash_includes ]; then
-#    for x in ~/.bash_includes/*
-#    do
-#        source $x
-#    done
-#fi
-
 # Show a fortune at login
 if [ -x /opt/local/bin/fortune ]; then
-    /opt/local/bin/fortune -s
+    /opt/local/bin/fortune
 fi
 

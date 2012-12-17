@@ -3,6 +3,7 @@
 	email = josephdpurcell@gmail.com
 [core]
 	quotepath = false
+	autocrlf = false
 [alias]                                                                                                                            
     st = status                                                                                                                    
     ci = commit                                                                                                                    
@@ -13,3 +14,7 @@
     dump = cat-file -p   
     unstage = reset HEAD
     wc = whatchanged
+    bl = branch-list
+    sl = stash-list
+[color]
+	ui = true

@@ -9,11 +9,14 @@ fi
 if [ "$BASH_PROMPT_TYPE" -eq 1 ]; then
     # purple/magenta
     export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    export GREP_COLOR='1;35' # green (this may get overwritten by bash_prompt)
 elif [ "$BASH_PROMPT_TYPE" -eq 2 ]; then
     # yellow
     export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
 else
     # green
     export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
 fi
 

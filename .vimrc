@@ -12,15 +12,28 @@
 let mapleader=","
 
 " CUSTOM FOR FILES
+" compile LaTeX file to pdf
+let @l = ":!pdflatex % && thisfile=% && open ${thisfile/tex/pdf}\n"
+" compile rst file to pdf
+let @r = ":!thisfile=% && rst2pdf --stylesheet-path=lmodern % && open ${thisfile/txt/pdf}\n\n"
+" run PHP file
+let @p = ":!php %\n"
+" run executable
+let @e = ":!./%\n"
 " This allows you to type @h and then the character you want
 " and it will insert the restructured underlines for you.
 let @h = "yypVr"
+let @v = "yyk[pjj"
 " insert a line
-let @l = "i// --------------------------------------------------------\n"
+"let @l = "i// --------------------------------------------------------\n"
 " insert begin phpdoc comment
 let @c = "i/**\n" " use with formatoptions=r
 " auto-format XML document (THIS ONE IS MAGICAL!!!)
 let @x = ":%!xmllint --format %\n"
+" auto-format JavaScript document (THIS ONE IS MAGICAL!!!)
+let @j = ":%!js -f %\n"
+" auto-format JSON document (THIS ONE IS MAGICAL!!!)
+let @s = ":%!jsonlint %\n"
 " switch tab space to 2 spaces
 let @2 = ":set ts=2 sw=2 sts=2 et\n"
 " switch tab space to 4 spaces
@@ -147,7 +160,9 @@ set noerrorbells         " don't beep
 "
 
 au BufRead,BufNewFile aliases set filetype=sh
+au BufRead,BufNewFile aliases_* set filetype=sh
 au BufRead,BufNewFile functions set filetype=sh
+au BufRead,BufNewFile functions_* set filetype=sh
 au BufRead,BufNewFile bash_prompt set filetype=sh
 au BufRead,BufNewFile inputrc set filetype=sh
 au BufRead,BufNewFile gitconfig set filetype=unix
@@ -160,3 +175,7 @@ au BufRead,BufNewFile .inputrc set filetype=sh
 au BufRead,BufNewFile .gitconfig set filetype=unix
 au BufRead,BufNewFile .gitignore set filetype=unix
 
+"set fileformats=unix,mac,dos
+
+
+set pastetoggle=<F2>
