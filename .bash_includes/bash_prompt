@@ -1,5 +1,34 @@
 # .bash_prompt
 
+__set_bash_prompt_type()
+{
+    local kernel
+    local cpuname
+    kernel=`uname -s`
+    cpuname=`uname -n`
+    if [ "$kernel" = "Darwin" ]; then
+        # change color for Mac
+        BASH_PROMPT_TYPE=2
+    else
+        # change color for Linux
+        BASH_PROMPT_TYPE=3
+    fi
+}
+
+# Here, we echo what comes after the username,
+# i.e. george@george-desktop
+# where "@george-desktop" gets printed to STDOUT here
+__environment()
+{
+    cpuname=`uname -n`
+	name=`echo $cpuname | sed "s/\.[^\.]*$//g"`
+	echo "@"$name
+}
+
+# ==============================
+# DO NOT EDIT BELOW THIS LINE!!!
+# ==============================
+
 if [ "`declare -f __set_bash_prompt_type > /dev/null; echo $?`" -eq 0 ]; then
     __set_bash_prompt_type
 else

@@ -79,14 +79,24 @@ __apache_aliases
 #alias ff=`__firefox` # open ff from command line
 #alias fftunnel=`__firefox_tunnel` # tunnel
 alias rm='rm -i'
-alias cp='cp -i'
+alias cp='cp -iv'
 alias mv='mv -i'
-alias ls='ls -G'
-alias ll='ls -lhaG'
-alias la='ls -1G'
-alias laa='ls -A1G'
-alias lss='ls -lhasG'
-alias lm='ls -lhamG'
+if [ `uname -s` = 'Darwin' ]; then
+	# add "G" flag to enable colorized output
+	alias ls='ls -G'
+	alias ll='ls -lhaG'
+	alias la='ls -1G'
+	alias laa='ls -A1G'
+	alias lss='ls -lhasG'
+	alias lm='ls -lhamG'
+else
+	alias ll='ls -lha'
+	alias la='ls -1'
+	alias laa='ls -A1'
+	alias lss='ls -lhas'
+	alias lm='ls -lham'
+fi
+alias lsproc='sudo netstat -tulpn'
 alias rgrep='grep -Rn' # recursive grep and show line number
 alias passgen='echo "Options:
     -m Length of password
@@ -101,12 +111,14 @@ alias reloadbash='source ~/.bashrc'
 # Vim Shortcuts
 alias vimbash='vim ~/.bashrc'
 alias vimprofile='vim ~/.profile'
-alias vimrc='sudo vim ~/.vimrc'
+alias vimrc='vim ~/.vimrc'
+alias vimb='vim ~/.bash_includes'
 
 # CD shortcuts
 alias cdbin='cd /usr/local/bin;pwd'
-alias cdmount='cd /opt/mount;pwd'
 alias cdrepos='cd /usr/local/share;pwd'
+alias cdlib='cd /usr/local/lib;pwd'
+alias cdmount='cd /opt/mount;pwd'
 # <WordPress>
 alias cdthemes='cd ./wp-content/themes;pwd'
 alias cdplugins='cd ./wp-content/plugins;pwd'

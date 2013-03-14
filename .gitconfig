@@ -3,7 +3,8 @@
 	email = josephdpurcell@gmail.com
 [core]
 	quotepath = false
-	autocrlf = false
+	autocrlf = input
+	path = /usr/libexec/git-core
 [alias]                                                                                                                            
     st = status                                                                                                                    
     ci = commit                                                                                                                    
@@ -15,6 +16,10 @@
     unstage = reset HEAD
     wc = whatchanged
     bl = branch-list
-    sl = stash-list
+    sl = stash list
+    sll = stash-list
+	sgi = istage
+	sga = add .
+	sg = stage
 [color]
 	ui = true

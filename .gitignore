@@ -1,6 +1,3 @@
 *.swp
 *.*~
-.bash_includes/aliases_netcrafters
-.bash_includes/aliases_home
-.bup-include
-.bup-exclude
+.netrwhist

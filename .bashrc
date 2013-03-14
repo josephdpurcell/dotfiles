@@ -9,6 +9,7 @@
 umask 002
 
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH=$PATH:/sbin
 #export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
 export PATH=$PATH:/usr/bin
 export PATH=$PATH:~/bin

@@ -434,23 +434,3 @@ __cp_dotfiles ()
     fi
 }
 
-__set_bash_prompt_type()
-{
-    local kernel
-    local cpuname
-    kernel=`uname -s`
-    cpuname=`uname -n`
-    if [ "$kernel" = "Darwin" ]; then
-        # change color for Mac
-        BASH_PROMPT_TYPE=2
-    else
-        # change color for Linux
-        BASH_PROMPT_TYPE=3
-    fi
-}
-
-__environment()
-{
-	# I don't remember what I'm doing with this
-	return
-}
