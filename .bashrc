@@ -15,7 +15,10 @@ export PATH=$PATH:/usr/bin
 export PATH=$PATH:~/bin
 export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
 export PATH=$PATH:/usr/local/mysql/bin
-export PATH=$PATH:/usr/local/share/pear/bin
+export PATH=/usr/local/share/pear/bin:$PATH
+#if [ `uname -s` = 'Darwin' ]; then
+#	export PATH=/Applications/MAMP/bin/php/php5.3.6/bin:$PATH
+#fi
 
 export APPLICATION_ENV='development'
 

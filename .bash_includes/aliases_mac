@@ -4,6 +4,10 @@
 
 # Mac OS X
 if [ `uname -s` = 'Darwin' ]; then
+    #usermod
+    # sudo dscl . -append /groups/wheel GroupMembership joep
+    #sudo launchctl unload -w /Library/LaunchDaemons/org.macports.mysql.plist
+    #sudo launchctl load -w /Library/LaunchDaemons/org.macports.mysql.plist
     alias spotlightoff='sudo mdutil -a -i off'
     alias spotlighton='sudo mdutil -a -i on'
     alias gvim='open -a /Applications/MacVim.app/Contents/MacOS/MacVim' # open MacVim from command line
@@ -16,7 +20,7 @@ if [ `uname -s` = 'Darwin' ]; then
     alias en0restart='sudo ifconfig -v en0 down;echo "en0 down";sudo ifconfig -v en0 up;echo "en0 up";ping 8.8.8.8'
     alias en1restart='sudo ifconfig -v en1 down;echo "en1 down";sudo ifconfig -v en1 up;echo "en1 up";ping 8.8.8.8'
     alias dnsflush='dscacheutil -flushcache'
-	alias lsdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "select LSQuarantineDataURLString from LSQuarantineEvent"'
-	alias rmdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "delete from LSQuarantineEvent"'
+    alias lsdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "select LSQuarantineDataURLString from LSQuarantineEvent"'
+    alias rmdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "delete from LSQuarantineEvent"'
 fi
 

@@ -3,18 +3,9 @@
 # Core aliases and functions
 #
 
-
-#usermod
-# sudo dscl . -append /groups/wheel GroupMembership joep
-
-
 # LAMP Shortcuts
-alias a2modules='httpd -t -D DUMP_MODULES' # need to move to __apache_aliases and make OS dependent
-alias a2log='tail -f /var/log/apache2/error_log' # need to move to __apache_aliases and make OS dependent
 alias mysqlstart='sudo mysqld_safe &'
 alias mysqlstop='mysqladmin -u root -p shutdown'
-#sudo launchctl unload -w /Library/LaunchDaemons/org.macports.mysql.plist
-#sudo launchctl load -w /Library/LaunchDaemons/org.macports.mysql.plist
 alias cathosts='cat /etc/hosts'
 alias vimhosts='sudo vim /etc/hosts'
 alias vimhttpd='sudo vim /etc/apache2/httpd.conf'
@@ -69,10 +60,19 @@ __apache_aliases ()
 {
     if which apachectl &> /dev/null; then
         alias a2restart='sudo apachectl restart'
+        alias a2modules='sudo apachectl -l'
+        alias a2log='tail -f /var/log/apache/error_log'
+    elif which apachectl &> /dev/null; then
+        alias a2restart='sudo apache2ctl restart'
+        alias a2modules='sudo apache2ctl -l'
+        alias a2log='tail -f /var/log/apache2/error_log'
     else
         alias a2restart='sudo /etc/init.d/httpd restart'
+        alias a2modules='httpd -t -D DUMP_MODULES'
+        alias a2log='tail -f /var/log/apache2/error_log'
     fi
 }
+
 __apache_aliases
 
 # Application Shortcuts
@@ -80,24 +80,26 @@ __apache_aliases
 #alias fftunnel=`__firefox_tunnel` # tunnel
 alias rm='rm -i'
 alias cp='cp -iv'
+alias cpf='cp -v'
 alias mv='mv -i'
 if [ `uname -s` = 'Darwin' ]; then
-	# add "G" flag to enable colorized output
-	alias ls='ls -G'
-	alias ll='ls -lhaG'
-	alias la='ls -1G'
-	alias laa='ls -A1G'
-	alias lss='ls -lhasG'
-	alias lm='ls -lhamG'
+    # add "G" flag to enable colorized output
+    alias ls='ls -G'
+    alias ll='ls -lhaG'
+    alias la='ls -1G'
+    alias laa='ls -A1G'
+    alias lss='ls -lhasG'
+    alias lm='ls -lhamG'
 else
-	alias ll='ls -lha'
-	alias la='ls -1'
-	alias laa='ls -A1'
-	alias lss='ls -lhas'
-	alias lm='ls -lham'
+    alias ll='ls -lha'
+    alias la='ls -1'
+    alias laa='ls -A1'
+    alias lss='ls -lhas'
+    alias lm='ls -lham'
 fi
 alias lsproc='sudo netstat -tulpn'
 alias rgrep='grep -Rn' # recursive grep and show line number
+alias psgrep='ps aux | grep'
 alias passgen='echo "Options:
     -m Length of password
     -n Number of passwords
@@ -119,9 +121,6 @@ alias cdbin='cd /usr/local/bin;pwd'
 alias cdrepos='cd /usr/local/share;pwd'
 alias cdlib='cd /usr/local/lib;pwd'
 alias cdmount='cd /opt/mount;pwd'
-# <WordPress>
-alias cdthemes='cd ./wp-content/themes;pwd'
-alias cdplugins='cd ./wp-content/plugins;pwd'
 
 # Mounting Shortcuts
 # Example (MacOSX):

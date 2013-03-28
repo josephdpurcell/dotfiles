@@ -24,6 +24,10 @@ call pathogen#infect()
 " == Compiling and Executing ==
 "
 
+" make
+let @m = ":!make"
+" make the current file
+:map @mf :!make -f %<cr>
 " compile LaTeX file to pdf
 let @l = ":!pdflatex % && thisfile=% && open ${thisfile/tex/pdf}\n"
 " compile rst file to pdf
@@ -54,8 +58,11 @@ let @e = ":!./%\n"
 :map @ps :%!phpcs %<cr>
 " lint AND auto-format XML document (THIS ONE IS MAGICAL!!!)
 let @x = ":%!xmllint --format %\n"
-" lint and beautify CSS (THIS ONE IS MAGICAL!!!)
-let @c = ":%!csslint-0.6 %\n"
+" lint CSS (THIS ONE IS MAGICAL!!!) http://csslint.net/
+" alt: https://npmjs.org/package/PrettyCSS
+let @c = ":%!csslint %\n"
+" auto-format CSS document (THIS ONE IS MAGICAL!!!) http://mrcoles.com/blog/command-line-css-unminifier-utility/
+:map @cc :%!cssunminifier %<cr>
 " minify CSS (THIS ONE IS MAGICAL!!!)
 :map @cm :%!yuicompress -s %<cr>
 " lint JavaScript document (THIS ONE IS MAGICAL!!!)
@@ -77,7 +84,7 @@ let @s = ":%!jsonlint %\n"
 let @h = "yypVr"
 " This is to add a date for documenting code (not very good, but it's a start)
 ":map @d :.s/.*/\=strftime("\/\/ %a %b %d %X %Z %Y")/<cr>
-:map @m :.s/.*/\=strftime("\/\/ Modified: %B %Y")/<cr>
+":map @m :.s/.*/\=strftime("\/\/ Modified: %B %Y")/<cr>
 :map @t :.s/.*/\=strftime("\/\/ Modified: %D at %r")/<cr>
 
 "
@@ -85,11 +92,12 @@ let @h = "yypVr"
 "
 
 " PRIMARY: use tabs instead of spaces
-:map @1 :set ts=4 sw=4 sts=4 noet<cr>
+:map @1 :set ts=4 sw=4 sts=4 cino=>4 et<cr>
+set ts=4 sw=4 sts=4 cino=>4 et
 " SECONDARY: use 4 spaces instead of tabs
-:map @2 :set ts=4 sw=4 sts=4 et<cr>
+:map @2 :set ts=4 sw=4 sts=4 cino=>4 noet<cr>
 " CSS: use 2 spaces instead of tabs
-:map @3 :set ts=2 sw=2 sts=2 et<cr>
+:map @3 :set ts=2 sw=2 sts=2 cino=>2 et<cr>
 " OFF: switch tabbing back to normal where it inserts an actual tab character
 let @0 = ":set noet\n"
 
@@ -148,17 +156,18 @@ set formatoptions=croq
 " for more info see:
 "   - http://vim.wikia.com/wiki/Indenting_source_code
 "   - http://tedlogan.com/techblog3.html
-set noexpandtab   " insert spaces instead of tabs by default
-set tabstop=4     " to tell vim how many columns a tab character counts for; i.e. a tab shows as four spaces
-set softtabstop=4 " to tell how many columns vim uses when you hit Tab in insert mode
-set shiftwidth=4  " number of spaces to use for autoindenting
 set autoindent    " always set autoindenting on
 set smartindent   " ?
 set cindent       " ?
-set cinoptions=>4 " ?
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 set ruler " show the ROW,COL for where your cursor is in the file
+" set the following 4 in "Syntax Switching"
+"set noexpandtab   " insert spaces instead of tabs by default
+"set tabstop=4     " to tell vim how many columns a tab character counts for; i.e. a tab shows as four spaces
+"set softtabstop=4 " to tell how many columns vim uses when you hit Tab in insert mode
+"set shiftwidth=4  " number of spaces to use for autoindenting
+"set cinoptions=>4 " a shift width multiplier?
 
 " =========================================================
 " FROM VINCENT DRIESSEN:
@@ -246,4 +255,42 @@ au BufRead,BufNewFile .gitignore set filetype=unix
 nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 "set fileformats=unix,mac,dos
+
+"" Reference: http://amix.dk/blog/post/19571
+"function! GitBranch()
+"    let branch = system("git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* //'")
+"    if branch != ''
+"        return '[' . substitute(branch, '\n', '', 'g') . ']'
+"    en
+"    return ''
+"endfunction
+"
+"" Reference: http://amix.dk/blog/post/19571
+"function! HasPaste()
+"    if &paste
+"        return '  * PASTE MODE * '
+"    en
+"    return ''
+"endfunction
+"
+"" I don't know what I'm doing here
+"set laststatus=2
+"set statusline=
+"set statusline +=%{GitBranch()}
+"set statusline +=%#Question#
+"set statusline +=%{HasPaste()}
+"set statusline +=%#StatusLine#
+"set statusline +=%0*
+"set statusline +=\ %<%F            "full path
+"set statusline +=%0*                "modified flag
+"set statusline +=%#Error#
+"set statusline +=%m                "modified flag
+"set statusline +=%#StatusLine#
+"set statusline +=%0*
+"set statusline +=%=%5l             "current line
+"set statusline +=/%L               "total lines
+"set statusline +=%4v\              "virtual column number
+"set statusline +=0x%04B\           "character under cursor
+"
+let g:GPGPreferArmor=1
 

@@ -336,101 +336,71 @@ __scp_dotfiles_beta ()
 # __copy_dotfiles user@server.com:
 #
 # TODO: make interactive
-__cp_dotfiles ()
+__cp_dotfiles()
 {
-    if [ ! -d "$1" ]
+    if [ -z "$1" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
+    then
+        # nothing was given
+        echo "__cp_dotfiles v1.0"
+        echo "This function is good for interactively copying your dotfiles to a directory on"
+        echo "the local system."
+        echo ""
+        echo "Usage:"
+        echo "__cp_dotfiles ~/ ./my_dotfiles"
+        return
+    fi
+
+    local FROM=`echo $1 | sed "s/\/$//g"`
+    local TO=$2
+    local ALL="false"
+    local CP=`which cp`
+
+    if [ ! -d "$FROM" ]
+    then
+        echo "FATAL ERROR: source is not a directory"
+        return
+    fi
+
+    if [ ! -d "$TO" ]
     then
         echo "FATAL ERROR: destination is not a directory"
         return
     fi
 
-    if [ -z "$1" ]
-    then
-        printf "You must specify the directory to copy to, i.e. /home/user/.\n\n"
-        return
-    else
-        local ALL="false"
-        local ALL2="false"
-        local COPY_SUBDIR="false"
+    echo "Copying files to $TO..."
+    FILES=`ls -ld1 $FROM/.??*`
+    for file in $FILES
+    do
+        if [ "$ALL" = "true" ]; then
+            answer="y"
+        else
+            read -p "Do you want to copy $file? " answer
+        fi
 
-        echo "Copying files to $1 as sudo..."
-        sleep 2 # just to give you time to panic and hit CTRL+C
-        FILES="~/.bashrc ~/.bash_profile ~/.profile ~/.bash_includes ~/.vim ~/.vimrc ~/.gitconfig ~/.gitignore ~/.inputrc"
-        for x in $FILES
-        do
-            if [ "$ALL" = "true" ]; then
-                answer="y"
-            else
-                read -p "Do you want to copy $x? " answer
-            fi
-
-            case "$answer" in
-                [yY1] | 'yes' )
-                    if [ -f "$x" ]; then
-                        cp $x $1
-                    elif [ -d "$x" ]; then
-                        cp -r $x $1
-                        #COPY_SUBDIR="true"
-                    else
-                        echo "FATAL ERROR: file not found: "$x
-                        break
-                    fi
-                    echo "done";;
-                [nN0] | 'no' )
-                    echo "Skipping $x";;
-                [aA] | 'all' )
-                    echo "Copying all"
-                    ALL="true";;
-                [xXeE] | 'exit' )
-                    echo "Exiting"
-                    break;;
-                * )
-                    echo "Invalid response";;
-            esac
-
-            if [ "$COPY_SUBDIR" = "true" ]; then
-                SUBDIR=$x"/*"
-                for y in $SUBDIR
-                do
-                    if [ "$ALL2" = "true" ]; then
-                        answer2="y"
-                    else
-                        read -p "Do you want to copy $y? " answer2
-                    fi
-
-                    case "$answer2" in
-                        [yY1] | 'yes' )
-                            if [ -f $y ]; then
-                                scp $y $1
-                            elif [ -d $y ]; then
-                                scp -r $y $1
-                            else
-                                echo "FATAL ERROR: file not found"
-                                break
-                            fi;;
-                        [nN0] | 'no' )
-                            echo "Skipping $y";;
-                        [aA] | 'all' )
-                            echo "Copying all"
-                            ALL2="true";;
-                        [xXeE] | 'exit' )
-                            echo "Exiting"
-                            break;;
-                        * )
-                            echo "Invalid response";;
-                    esac
-                done
-            fi
-        done
-#        sudo cp ~/.bashrc $1
-#        sudo cp ~/.bash_profile $1
-#        sudo cp ~/.profile $1
-#        sudo cp -v -rv ~/.bash_includes $1
-#        sudo cp -v -rv ~/.vim $1
-#        sudo cp ~/.vimrc $1
-#        sudo cp -v -rv ~/.gitconfig $1
-#        sudo cp -v -rv ~/.gitignore $1
-#        sudo cp -v -rv ~/.inputrc $1
-    fi
+        case "$answer" in
+            [yY1] | 'yes' )
+                if [ -f "$file" ]; then
+                    echo -n "Copying $file..."
+                    $CP -f $file $TO
+                elif [ -d "$file" ]; then
+                    echo -n "Copying $file..."
+                    $CP -rf $file $TO
+                else
+                    echo "FATAL ERROR: file not found: "$x
+                    break
+                fi
+                echo " Done";;
+            [nN0] | 'no' )
+                echo "Skipping $file";;
+            [aA] | 'all' )
+                echo "Copying all"
+                ALL="true";;
+            [xXeE] | 'exit' )
+                echo "Exiting"
+                break;;
+            * )
+                echo "Invalid response";;
+        esac
+    done
 }
 
