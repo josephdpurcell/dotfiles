@@ -16,10 +16,15 @@
     unstage = reset HEAD
     wc = whatchanged
     bl = branch-list
-    sl = stash list
-    sll = stash-list
 	sgi = istage
 	sga = add .
 	sg = stage
+	sl = stash list
+	sll = stash-list
+	slll = stash-list --full
+	sa = !sh -c \"git stash apply stash@{$1}\" -
+	sd = !sh -c \"git stash drop stash@{$1}\" -
+	ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save $1; fi }; f"
+    sp = stash pop
 [color]
 	ui = true

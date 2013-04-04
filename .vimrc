@@ -54,6 +54,8 @@ let @e = ":!./%\n"
 " == Linting, Beautifying, Condensing and Analyzing ==
 "
 
+" PHP Linter
+:map @pl :%!php -l %<cr>
 " PHP_CodeSniffer
 :map @ps :%!phpcs %<cr>
 " lint AND auto-format XML document (THIS ONE IS MAGICAL!!!)

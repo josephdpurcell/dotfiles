@@ -58,21 +58,28 @@ __mysql5_aliases ()
 __mysql5_aliases
 __apache_aliases ()
 {
-    if which apachectl &> /dev/null; then
-        alias a2restart='sudo apachectl restart'
-        alias a2modules='sudo apachectl -l'
-        alias a2log='tail -f /var/log/apache/error_log'
-    elif which apachectl &> /dev/null; then
+    if which apache2ctl &> /dev/null; then
         alias a2restart='sudo apache2ctl restart'
         alias a2modules='sudo apache2ctl -l'
-        alias a2log='tail -f /var/log/apache2/error_log'
+        if [ -f '/varlog/apache2/error_log' ]
+            alias a2log='tail -f /var/log/apache2/error_log'
+        then
+            alias a2log='tail -f /var/log/apache2/error.log'
+        fi
+    elif which apachectl &> /dev/null; then
+        alias a2restart='sudo apachectl restart'
+        alias a2modules='sudo apachectl -l'
+        if [ -f '/varlog/apache/error_log' ]
+            alias a2log='tail -f /var/log/apache/error_log'
+        then
+            alias a2log='tail -f /var/log/apache/error.log'
+        fi
     else
         alias a2restart='sudo /etc/init.d/httpd restart'
         alias a2modules='httpd -t -D DUMP_MODULES'
-        alias a2log='tail -f /var/log/apache2/error_log'
+        alias a2log='tail -f /var/log/apache2/error.log'
     fi
 }
-
 __apache_aliases
 
 # Application Shortcuts
@@ -112,6 +119,7 @@ alias reloadbash='source ~/.bashrc'
 
 # Vim Shortcuts
 alias vimbash='vim ~/.bashrc'
+alias vimgit='vim ~/.gitconfig'
 alias vimprofile='vim ~/.profile'
 alias vimrc='vim ~/.vimrc'
 alias vimb='vim ~/.bash_includes'
