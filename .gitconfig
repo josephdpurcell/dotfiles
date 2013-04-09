@@ -1,30 +1,30 @@
 [user]
-	name = Joseph D. Purcell
-	email = josephdpurcell@gmail.com
+    name = Joseph D. Purcell
+    email = josephdpurcell@gmail.com
 [core]
-	quotepath = false
-	autocrlf = input
-	path = /usr/libexec/git-core
-[alias]                                                                                                                            
-    st = status                                                                                                                    
-    ci = commit                                                                                                                    
-    br = branch                                                                                                                    
-    co = checkout                                                                                                                  
-    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short                                                        
-    type = cat-file -t                                                                                                             
-    dump = cat-file -p   
+    quotepath = false
+    autocrlf = input
+    path = /usr/libexec/git-core
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
     unstage = reset HEAD
     wc = whatchanged
     bl = branch-list
-	sgi = istage
-	sga = add .
-	sg = stage
-	sl = stash list
-	sll = stash-list
-	slll = stash-list --full
-	sa = !sh -c \"git stash apply stash@{$1}\" -
-	sd = !sh -c \"git stash drop stash@{$1}\" -
-	ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save $1; fi }; f"
+    sgi = istage
+    sga = add .
+    sg = stage
+    sl = stash list
+    sll = stash-list
+    slll = stash-list --full
+    sa = !sh -c \"git stash apply stash@{$1}\" -
+    sd = !sh -c \"git stash drop stash@{$1}\" -
+    ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save $1; fi }; f"
     sp = stash pop
 [color]
-	ui = true
+    ui = true
