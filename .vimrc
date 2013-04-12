@@ -49,6 +49,7 @@ let @e = ":!./%\n"
 :map @gs :!git status<cr>
 :map @gc :!git commit<cr>
 :map @gca :!git commit -a<cr>
+:map @gcl :0r !git rev-list --format=\%B --max-count=1 HEAD \| tail -n +2 \| head -1<cr>
 
 "
 " == Linting, Beautifying, Condensing and Analyzing ==
@@ -58,6 +59,8 @@ let @e = ":!./%\n"
 :map @pl :%!php -l %<cr>
 " PHP_CodeSniffer
 :map @ps :%!phpcs %<cr>
+" PHP Beautify a pasted PHP array
+:map @pa = :'<,'>s;\(\[[0-9]*\] => \)\?Array\s*\n\s*(;array(;g<cr>:'<,'>s;\[\([^\]]*\)\] => \(.*\)$;'\1' => '\2',;g<cr>:'<,'>s;,\n\(\s*\))\n^\n;\r\1),\r;g<cr>:'<,'>s;),\n\(\s*\));)\r\1);g<cr>
 " lint AND auto-format XML document (THIS ONE IS MAGICAL!!!)
 let @x = ":%!xmllint --format %\n"
 " lint CSS (THIS ONE IS MAGICAL!!!) http://csslint.net/
