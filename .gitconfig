@@ -15,6 +15,8 @@
     dump = cat-file -p
     unstage = reset HEAD
     wc = whatchanged
+    tg = tag -n1
+    tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo $c; git show --quiet \"$c\"; echo; done }; f"
     l = log
     ll = log --pretty=fuller
     bl = branch-list
