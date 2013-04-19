@@ -2137,6 +2137,7 @@ _git ()
 	svn)         _git_svn ;;
 	tag)         _git_tag ;;
 	whatchanged) _git_log ;;
+	purge)       _git_checkout ;;
 	*)           COMPREPLY=() ;;
 	esac
 }
