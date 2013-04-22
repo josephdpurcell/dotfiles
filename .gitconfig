@@ -30,5 +30,12 @@
     sd = !sh -c \"git stash drop stash@{$1}\" -
     ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save $1; fi }; f"
     sp = stash pop
+    # this doesn't work bc you can't edit a prior commmit, only the most recent
+    #change-date = "!f() { if [[ -z $1 ]] || [[ -z $2 ]]; then echo \"You must specify a date and commit hash:\ngit commit-date 'Thu Apr 17 10:06:40 2013 -0400' 911b21b4594dbfcdf461d12a0bf6e0d844ac0239\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend -C \"$2\" --date=\"$1\"; fi }; f"
+    change-date = "!f() { if [[ -z $1 ]]; then echo \"You must specify a date:\ngit commit-date \"Thu Apr 17 10:06:40 2013 -0400\"\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend --no-edit --date=\"$1\"; fi }; f"
 [color]
     ui = true
+[pull]
+	rebase = true
+[merge]
+	ff = false

@@ -116,6 +116,23 @@ Generating 6 passwords 32 characters long:
 #alias passgen='apg -M SNCL -m'
 alias reloadbashrc='source ~/.bashrc'
 alias reloadbash='source ~/.bashrc'
+# reference: http://linuxcommando.blogspot.com/2007/10/dictionary-lookup-via-command-line.html
+__define ()
+{
+    local word;
+    word=$@;
+    echo 'Define '$word;
+    curl -v 'dict://dict.org/d:'$word;
+}
+__definem ()
+{
+    local word;
+    word=$@;
+    echo 'Define (match) '$word;
+    curl -v 'dict://dict.org/m:'$word;
+}
+alias define='__define $1'
+alias definem='__definem $1'
 
 # Vim Shortcuts
 alias vimbash='vim ~/.bashrc'
@@ -129,6 +146,7 @@ alias cdbin='cd /usr/local/bin;pwd'
 alias cdrepos='cd /usr/local/share;pwd'
 alias cdlib='cd /usr/local/lib;pwd'
 alias cdmount='cd /opt/mount;pwd'
+alias cdvim='cd ~/.vim/'
 
 # Mounting Shortcuts
 # Example (MacOSX):
