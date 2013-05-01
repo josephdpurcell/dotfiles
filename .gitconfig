@@ -17,8 +17,9 @@
     wc = whatchanged
     tg = tag -n1
     tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo $c; git show --quiet \"$c\"; echo; done }; f"
-    l = log
-    ll = log --pretty=fuller
+    l = log --oneline
+    ll = log
+    lll = log --pretty=fuller
     bl = branch-list
     sgi = istage
     sga = add .
@@ -32,7 +33,8 @@
     sp = stash pop
     # this doesn't work bc you can't edit a prior commmit, only the most recent
     #change-date = "!f() { if [[ -z $1 ]] || [[ -z $2 ]]; then echo \"You must specify a date and commit hash:\ngit commit-date 'Thu Apr 17 10:06:40 2013 -0400' 911b21b4594dbfcdf461d12a0bf6e0d844ac0239\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend -C \"$2\" --date=\"$1\"; fi }; f"
-    change-date = "!f() { if [[ -z $1 ]]; then echo \"You must specify a date:\ngit commit-date \"Thu Apr 17 10:06:40 2013 -0400\"\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend --no-edit --date=\"$1\"; fi }; f"
+    change-date = "!f() { if [[ -z $1 ]]; then echo \"You must specify a date:\n$ git change-date 'Thu Apr 17 10:06:40 2013 -0400'\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend --no-edit --date=\"$1\"; fi }; f"
+    change-author = "!f() { if [[ -z $1 ]]; then echo \"You must specify a name and email:\n$ git change-author 'Joe Person' 'joe@person.com'\"; else env GIT_COMMITTER_NAME=\"$1\" GIT_COMMITTER_EMAIL=\"$2\" git commit --amend --no-edit --author \"$1 <$2>\"; fi }; f"
 [color]
     ui = true
 [pull]
