@@ -104,6 +104,30 @@ else
     alias lss='ls -lhas'
     alias lm='ls -lham'
 fi
+# list files you cannot write to; default is maxdepth has no limit
+# todo: handle "s" bit, because it will pass -w but not the parent dir
+# Reference: http://superuser.com/a/409823/190466
+# Reference: http://serverfault.com/questions/265582/list-non-writable-files-in-linux
+lsw ()
+{
+    oIFS=$IFS;
+    IFS=$'\n';
+    if [ -z $1 ]
+    then
+        wd=`pwd`
+    else
+        wd=$1
+    fi
+    wd=`echo "$wd" | sed 's/\/$//g'`
+    find $wd -type f | while read -r i
+    do
+        if [ ! -w "$i" ]
+        then
+            echo "$i"
+        fi
+    done
+    IFS=$oIFS
+}
 alias lsproc='sudo netstat -tulpn'
 alias rgrep='grep -Rn' # recursive grep and show line number
 alias psgrep='ps aux | grep'
