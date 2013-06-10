@@ -44,11 +44,15 @@ let @e = ":!./%\n"
 "
 " == Git Helpers ==
 "
-:map @gd :!git diff --stat<cr>
-:map @gdf :!git diff<cr>
+:map @gd :%!git diff --name-only<cr>
+:map @gdd :!git diff --stat<cr>
+:map @gddd :!git diff<cr>
+:map @gdf :!git diff %<cr>
 :map @gs :!git status<cr>
+:map @ga :!git add .<cr>
 :map @gc :!git commit<cr>
-:map @gca :!git commit -a<cr>
+:map @gcc :!git commit -a<cr>
+" insert the body of the last commit message (good for typing commits with the same task number)
 :map @gcl :0r !git rev-list --format=\%B --max-count=1 HEAD \| tail -n +2 \| head -1<cr>
 
 "
