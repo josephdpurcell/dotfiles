@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="YourCodingStandardName">
+  <!-- reference: http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+  <description>The PHP Coding Standard description you want.</description>
+  <rule ref="PEAR"/>
+  <rule ref="Generic.Files.LineLength.TooLong">
+    <severity>1</severity>
+  </rule>
+  <rule ref="Generic.Files.LineLength.MaxExceeded">
+    <severity>1</severity>
+  </rule>
+  <rule ref="PEAR.Commenting.FileComment.InvalidAuthors">
+    <severity>3</severity>
+  </rule>
+  <rule ref="PEAR.Commenting.ClassComment.InvalidAuthors">
+    <severity>3</severity>
+  </rule>
+  <rule ref="Generic.Commenting.Todo.CommentFound">
+    <message>Please review this TODO comment: %s</message>
+    <severity>3</severity>
+  </rule>
+</ruleset>

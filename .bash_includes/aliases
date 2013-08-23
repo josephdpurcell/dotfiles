@@ -134,6 +134,14 @@ alias psgrep='ps aux | grep'
 alias passgen='echo "Options:
     -m Length of password
     -n Number of passwords
+    -M Allowed characters:
+        [S]pecial
+        [N]umeral
+        [C]apital
+        [L]etter small
+
+Example:
+    $ passgen -m 64 -M NCL
 
 Generating 6 passwords 32 characters long:
 "; apg -M SNCL -m 32'
@@ -157,6 +165,25 @@ __definem ()
 }
 alias define='__define $1'
 alias definem='__definem $1'
+__vimgrep ()
+{
+    local files;
+    files=`grep -l -R $@`;
+    if [[ ! -z $files ]]
+    then
+        vim -O $files
+    fi
+}
+alias vimgrep='__vimgrep $@'
+
+# thank you http://ruslanspivak.com/2010/06/02/urlencode-and-urldecode-from-a-command-line/
+# tried so many others, even writing my own...
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
+alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
+
+# php serialize and unserialize
+alias unserialize='php -r "print_r(unserialize(\$argv[1]));"'
+alias serialize='php -r "echo serialize(\$argv[1]);"'
 
 # Vim Shortcuts
 alias vimbash='vim ~/.bashrc'

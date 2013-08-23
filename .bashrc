@@ -14,6 +14,7 @@ umask 002
 # 1. Setup PATH
 #
 
+export PATH=$PATH:/Applications/MAMP/bin/php/php5.3.6/bin/php
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH=$PATH:/sbin
 #export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
@@ -32,6 +33,9 @@ fi
 #
 
 export APPLICATION_ENV='development'
+export ENVIRONMENT='development'
+export HISTFILESIZE=2000000
+export HISTSIZE=15000
 
 # have grep highlight words found
 export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)

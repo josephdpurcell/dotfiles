@@ -1,5 +1,6 @@
 # .bash_prompt
 
+# Here you get to choose which prompt type to use by setting BASH_PROMPT_TYPE.
 __set_bash_prompt_type()
 {
     local kernel
@@ -8,12 +9,15 @@ __set_bash_prompt_type()
     cpuname=`uname -n`
     if [ "$kernel" = "Darwin" ]; then
         # change color for Mac
-        BASH_PROMPT_TYPE=2
+        BASH_PROMPT_TYPE=4
     else
         # change color for Linux
-        BASH_PROMPT_TYPE=3
+        BASH_PROMPT_TYPE=5
     fi
 }
+
+# set whether or not to use a rotating image for the end of prompt character
+BASH_PROMPT_AWESOME=1
 
 # Here, we echo what comes after the username,
 # i.e. george@george-desktop
@@ -35,17 +39,62 @@ else
     BASH_PROMPT_TYPE=99
 fi
 
+# add core of prompt
 if [ "$BASH_PROMPT_TYPE" -eq 1 ]; then
-    # purple/magenta
-    export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    # magenta
+    export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;35m\]'
     export GREP_COLOR='1;35' # green (this may get overwritten by bash_prompt)
 elif [ "$BASH_PROMPT_TYPE" -eq 2 ]; then
     # yellow
-    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;33m\]'
+    export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
+elif [ "$BASH_PROMPT_TYPE" -eq 3 ]; then
+    # blue
+    export PS1='\[\e[0;34m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;34m\]'
+    export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
+elif [ "$BASH_PROMPT_TYPE" -eq 4 ]; then
+    # yellow with green $
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;32m\]'
     export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
 else
     # green
-    export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]$ '
+    export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;32m\]'
     export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
 fi
+
+# add ending
+if [ "$BASH_PROMPT_AWESOME" -eq 1 ]
+then
+    #export PS1=$PS1'\342\230\240 '
+    prompt_reset=$PS1'$ '
+    day=`date +"%j"`
+    mod=$(($day % 5))
+    if [ $mod -eq 0 ]
+    then
+        export PS1=$PS1'🍀  '
+    elif [ $mod -eq 1 ]
+    then
+        export PS1=$PS1'💣  '
+    elif [ $mod -eq 2 ]
+    then
+        export PS1=$PS1'🔮  '
+    elif [ $mod -eq 3 ]
+    then
+        export PS1=$PS1'💀  '
+    elif [ $mod -eq 4 ]
+    then
+        export PS1=$PS1'🌎  '
+    else
+        export PS1=$PS1'$ '
+    fi
+else
+    prompt_reset=$PS1'$ '
+    export PS1=$PS1'$ '
+fi
+
+# reset prompt to something "normal"
+resetprompt()
+{
+    export PS1=$prompt_reset;
+}
 

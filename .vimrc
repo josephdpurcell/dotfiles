@@ -62,14 +62,14 @@ let @e = ":!./%\n"
 " PHP Linter
 :map @pl :%!php -l %<cr>
 " PHP_CodeSniffer
-:map @ps :%!phpcs %<cr>
+:map @ps :%!phpcs --standard="$HOME/.phpcs.xml" %<cr>
 " PHP Beautify a pasted PHP array
 :map @pa = :'<,'>s;\(\[[0-9]*\] => \)\?Array\s*\n\s*(;array(;g<cr>:'<,'>s;\[\([^\]]*\)\] => \(.*\)$;'\1' => '\2',;g<cr>:'<,'>s;,\n\(\s*\))\n^\n;\r\1),\r;g<cr>:'<,'>s;),\n\(\s*\));)\r\1);g<cr>
 " lint AND auto-format XML document (THIS ONE IS MAGICAL!!!)
 let @x = ":%!xmllint --format %\n"
 " lint CSS (THIS ONE IS MAGICAL!!!) http://csslint.net/
 " alt: https://npmjs.org/package/PrettyCSS
-let @c = ":%!csslint %\n"
+let @c = ":%!csslint --ignore=ids,important,box-model,compatible-vendor-prefixes,adjoining-classes,qualified-headings %\n"
 " auto-format CSS document (THIS ONE IS MAGICAL!!!) http://mrcoles.com/blog/command-line-css-unminifier-utility/
 :map @cc :%!cssunminifier %<cr>
 " minify CSS (THIS ONE IS MAGICAL!!!)
@@ -303,3 +303,19 @@ nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 "
 let g:GPGPreferArmor=1
 
+
+"let @s = ":%!jsonlint %\n"
+"
+"command! -range -nargs=1 SendToCommand <line1>,<line2>call SendToCommand(<q-args>) 
+"
+"function! SendToCommand(UserCommand) range
+"    " Get a list of lines containing the selected range
+"    let SelectedLines = getline(a:firstline,a:lastline)
+"    " Convert to a single string suitable for passing to the command
+"    let ScriptInput = join(SelectedLines, "\n") . "\n"
+"    " Run the command
+"    let result = system(a:UserCommand, ScriptInput)
+"    " Echo the result (could just do "echo system(....)")
+"    echo result
+"endfunction
+"

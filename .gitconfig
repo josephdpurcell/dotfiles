@@ -16,7 +16,7 @@
     unstage = reset HEAD
     wc = whatchanged
     tg = tag -n1
-    tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo $c; git show --quiet \"$c\"; echo; done }; f"
+    tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo \"\"; git for-each-ref $c --format=${c:10}' %(subject)'; git log -1 --pretty=short \"$c\"; done }; f"
     l = log --oneline
     ll = log
     lll = log --pretty=fuller
