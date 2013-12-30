@@ -2138,6 +2138,7 @@ _git ()
 	tag)         _git_tag ;;
 	whatchanged) _git_log ;;
 	purge)       _git_checkout ;;
+	compare)     _git_checkout ;;
 	*)           COMPREPLY=() ;;
 	esac
 }

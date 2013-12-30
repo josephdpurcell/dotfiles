@@ -8,25 +8,37 @@
 #
 # TODO: make a notification in the prompt when looking in folders in a 'www' or 'vhosts' folder
 
+# Umask of 002 is so convenient...
 umask 002
 
 #
 # 1. Setup PATH
 #
+# Note: the PATH priority goes by the directories listed first. So, to make a dir priority, do:
+#
+#   export PATH=/sbin:$PATH
+#
+# and to make a dir not priority do:
+#
+#   export PATH=$PATH:/sbin
+#
 
-export PATH=$PATH:/Applications/MAMP/bin/php/php5.3.6/bin/php
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH=$PATH:/sbin
-#export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
-export PATH=$PATH:/usr/bin
-export PATH=$PATH:~/bin
-export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
-export PATH=$PATH:/usr/local/mysql/bin
+#export PATH=$PATH:/usr/bin
+export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/share/pear/bin:$PATH
 if [ `uname -s` = 'Darwin' ]; then
-	export PATH=/Applications/MAMP/bin/php/php5.3.6/bin:$PATH
-    export PATH=/Applications/MAMP/Library/bin:$PATH
+    export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
+    # For MAMP:
+    #export PATH=/Applications/MAMP/bin/php/php5.3.6/bin:$PATH
+    #export PATH=/Applications/MAMP/Library/bin:$PATH
+    # For MacPorts Apache + MySQL's MySQL:
+    export PATH=/opt/local/apache2/bin:$PATH
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export PATH=/usr/local/mysql/bin:$PATH
 fi
+# If you use android emulator:
+#export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
 
 #
 # 2. Variables

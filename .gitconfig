@@ -35,9 +35,18 @@
     #change-date = "!f() { if [[ -z $1 ]] || [[ -z $2 ]]; then echo \"You must specify a date and commit hash:\ngit commit-date 'Thu Apr 17 10:06:40 2013 -0400' 911b21b4594dbfcdf461d12a0bf6e0d844ac0239\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend -C \"$2\" --date=\"$1\"; fi }; f"
     change-date = "!f() { if [[ -z $1 ]]; then echo \"You must specify a date:\n$ git change-date 'Thu Apr 17 10:06:40 2013 -0400'\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend --no-edit --date=\"$1\"; fi }; f"
     change-author = "!f() { if [[ -z $1 ]]; then echo \"You must specify a name and email:\n$ git change-author 'Joe Person' 'joe@person.com'\"; else env GIT_COMMITTER_NAME=\"$1\" GIT_COMMITTER_EMAIL=\"$2\" git commit --amend --no-edit --author \"$1 <$2>\"; fi }; f"
+    #compare = !sh -c \"git log --oneline --no-merges HEAD ^$1\" -
+    # this doesnt work no matter how much I pretend it does:
+    #vim = !sh -c \"vim -O `git diff-tree --no-commit-id --name-only -r $1 | tr '\n' ' '`\" -
+    # remember this trick to show older version of a file:
+    # git show HEAD^:main.cpp > old_main.cpp
+    # Source: http://stackoverflow.com/a/888623
+    add-pushable-hooks = "!f() { git config receive.denyCurrentBranch ignore;DIR=`git rev-parse --show-toplevel`;echo '#!'\"/bin/bash\ncd ..\nenv -i git reset --hard\" > $DIR/.git/hooks/post-receive;chmod +x $DIR/.git/hooks/post-receive; }; f"
 [color]
     ui = true
 [pull]
 	rebase = true
 [merge]
 	ff = false
+[remote "origin"]
+	receivepack = git receive-pack

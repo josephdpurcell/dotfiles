@@ -3,84 +3,154 @@
 # Core aliases and functions
 #
 
-# LAMP Shortcuts
-alias mysqlstart='sudo mysqld_safe &'
-alias mysqlstop='mysqladmin -u root -p shutdown'
+# Hosts Shortcutes
 alias cathosts='cat /etc/hosts'
 alias vimhosts='sudo vim /etc/hosts'
-alias vimhttpd='sudo vim /etc/apache2/httpd.conf'
-alias vimvhosts='sudo vim -O /Users/Shared/conf/vhosts.conf /etc/apache2/httpd.conf'
-alias vimphp='sudo vim /etc/php.ini'
+
+# MySQL Shortcutes
+mysql_config_file='/etc/my.cnf';
 __mysql5_aliases ()
 {
     # Make aliases for MySQL 5
     if which mysql &> /dev/null; then
+        alias mysqlstart='sudo mysqld_safe &'
+        alias mysqlstop='mysqladmin -u root -p shutdown'
         # no aliases are needed, because mysql is avail
         return
     else
-        alias my_print_defaults='my_print_defaults5'
-        alias myisam_ftdump='myisam_ftdump5'
-        alias myisamchk='myisamchk5'
-        alias myisamlog='myisamlog5'
-        alias myisampack='myisampack5'
-        alias mysql='mysql5'
-        alias mysql_client_test='mysql_client_test5'
-        alias mysql_client_test_embedded='mysql_client_test_embedded5'
-        alias mysql_config='mysql_config5'
-        alias mysql_convert_table_format='mysql_convert_table_format5'
-        alias mysql_find_rows='mysql_find_rows5'
-        alias mysql_fix_extensions='mysql_fix_extensions5'
-        alias mysql_fix_privilege_tables='mysql_fix_privilege_tables5'
-        alias mysql_install_db='mysql_install_db5'
-        alias mysql_secure_installation='mysql_secure_installation5'
-        alias mysql_setpermission='mysql_setpermission5'
-        alias mysql_tzinfo_to_sql='mysql_tzinfo_to_sql5'
-        alias mysql_upgrade='mysql_upgrade5'
-        alias mysql_waitpid='mysql_waitpid5'
-        alias mysql_zap='mysql_zap5'
-        alias mysqlaccess='mysqlaccess5'
-        alias mysqladmin='mysqladmin5'
-        alias mysqlbinlog='mysqlbinlog5'
-        alias mysqlbug='mysqlbug5'
-        alias mysqlcheck='mysqlcheck5'
-        alias mysqld_multi='mysqld_multi5'
-        alias mysqld_safe='mysqld_safe5'
-        alias mysqldump='mysqldump5'
-        alias mysqldumpslow='mysqldumpslow5'
-        alias mysqlhotcopy='mysqlhotcopy5'
-        alias mysqlimport='mysqlimport5'
-        alias mysqlshow='mysqlshow5'
-        alias mysqlslap='mysqlslap5'
-        alias mysqltest='mysqltest5'
-        alias mysqltest_embedded='mysqltest_embedded5'
+        if [ -f "/Library/LaunchDaemons/org.macports.mysql5.plist" ]; then
+            alias mysqlstart='sudo launchctl load -w /Library/LaunchDaemons/org.macports.mysql5.plist'
+            alias mysqlstop='sudo launchctl unload -w /Library/LaunchDaemons/org.macports.mysql5.plist'
+        elif [ -f "/Library/LaunchDaemons/org.macports.mysql.plist" ]; then
+            alias mysqlstart='sudo launchctl load -w /Library/LaunchDaemons/org.macports.mysql.plist'
+            alias mysqlstop='sudo launchctl unload -w /Library/LaunchDaemons/org.macports.mysql.plist'
+        else
+            alias mysqlstart='sudo mysqld_safe5 &'
+            alias mysqlstop='mysqladmin5 -u root -p shutdown'
+        fi
+        local path
+        path=`which mysql5 | sed "s/\/[^\/]*\/*$//"`
+        alias my_print_defaults=$path'/my_print_defaults5'
+        alias myisam_ftdump=$path'/myisam_ftdump5'
+        alias myisamchk=$path'/myisamchk5'
+        alias myisamlog=$path'/myisamlog5'
+        alias myisampack=$path'/myisampack5'
+        alias mysql=$path'/mysql5'
+        alias mysql_client_test=$path'/mysql_client_test5'
+        alias mysql_client_test_embedded=$path'/mysql_client_test_embedded5'
+        alias mysql_config=$path'/mysql_config5'
+        alias mysql_convert_table_format=$path'/mysql_convert_table_format5'
+        alias mysql_find_rows=$path'/mysql_find_rows5'
+        alias mysql_fix_extensions=$path'/mysql_fix_extensions5'
+        alias mysql_fix_privilege_tables=$path'/mysql_fix_privilege_tables5'
+        alias mysql_install_db=$path'/mysql_install_db5'
+        alias mysql_secure_installation=$path'/mysql_secure_installation5'
+        alias mysql_setpermission=$path'/mysql_setpermission5'
+        alias mysql_tzinfo_to_sql=$path'/mysql_tzinfo_to_sql5'
+        alias mysql_upgrade=$path'/mysql_upgrade5'
+        alias mysql_waitpid=$path'/mysql_waitpid5'
+        alias mysql_zap=$path'/mysql_zap5'
+        alias mysqlaccess=$path'/mysqlaccess5'
+        alias mysqladmin=$path'/mysqladmin5'
+        alias mysqlbinlog=$path'/mysqlbinlog5'
+        alias mysqlbug=$path'/mysqlbug5'
+        alias mysqlcheck=$path'/mysqlcheck5'
+        alias mysqld_multi=$path'/mysqld_multi5'
+        alias mysqld_safe=$path'/mysqld_safe5'
+        alias mysqldump=$path'/mysqldump5'
+        alias mysqldumpslow=$path'/mysqldumpslow5'
+        alias mysqlhotcopy=$path'/mysqlhotcopy5'
+        alias mysqlimport=$path'/mysqlimport5'
+        alias mysqlshow=$path'/mysqlshow5'
+        alias mysqlslap=$path'/mysqlslap5'
+        alias mysqltest=$path'/mysqltest5'
+        alias mysqltest_embedded=$path'/mysqltest_embedded5'
     fi
 }
 __mysql5_aliases
-__apache_aliases ()
+
+# Apache Shortcuts
+# Note: for these to work right, this assumes apachectl is in your PATH
+apache_config_file='';
+apache_error_log_file='';
+apache_access_log_file='';
+apache_vhosts_file='';
+__apache_aliases()
 {
-    if which apache2ctl &> /dev/null; then
-        alias a2restart='sudo apache2ctl restart'
-        alias a2modules='sudo apache2ctl -l'
-        if [ -f '/varlog/apache2/error_log' ]
-            alias a2log='tail -f /var/log/apache2/error_log'
-        then
-            alias a2log='tail -f /var/log/apache2/error.log'
-        fi
-    elif which apachectl &> /dev/null; then
-        alias a2restart='sudo apachectl restart'
-        alias a2modules='sudo apachectl -l'
-        if [ -f '/varlog/apache/error_log' ]
-            alias a2log='tail -f /var/log/apache/error_log'
-        then
-            alias a2log='tail -f /var/log/apache/error.log'
-        fi
-    else
-        alias a2restart='sudo /etc/init.d/httpd restart'
-        alias a2modules='httpd -t -D DUMP_MODULES'
-        alias a2log='tail -f /var/log/apache2/error.log'
-    fi
+    local path;
+    local conf;
+    local log;
+    local vhosts;
+    # get data to construct files
+    path=`apachectl -V | grep HTTPD_ROOT | cut -d"=" -f2 | sed 's/"//g'`;
+    conf=`apachectl -V | grep SERVER_CONFIG_FILE | cut -d"=" -f2 | sed 's/"//g'`;
+    log=`apachectl -V | grep DEFAULT_ERRORLOG | cut -d"=" -f2 | sed 's/"//g'`;
+    # set files
+    apache_config_file="$path/$conf";
+    apache_error_log_file="$path/$log";
+    # assume access log is the same as error log just "access" instead of "error" in the filename
+    apache_access_log_file="$path/${log/error/access}";
+    # assume we have found a /Include.*vhosts/ match
+    vhosts=`cat $apache_config_file | grep -i "include.*vhosts" | cut -d" " -f2`;
+    apache_vhosts_file="$path/$vhosts";
 }
 __apache_aliases
+alias vimhttpd="sudo vim $apache_config_file";
+alias vimvhosts="sudo vim $apache_vhosts_file";
+alias vima2="sudo vim -O $apache_config_file $apache_vhosts_file";
+alias a2restart='apachectl configtest && (echo "Restarting apache..."; sudo apachectl restart;) || echo "Did not attempt to restart apache due to error in syntax"';
+alias a2modules='apachectl -t -D DUMP_MODULES'
+alias a2log='echo "==> $apache_error_log_file <=="; tail -f $apache_error_log_file'
+
+#__apache_aliases ()
+#{
+#    MAMP=0
+#    if [ $MAMP -eq 1 ]; then
+#        alias a2restart='sudo /Applications/MAMP/Library/bin/apachectl restart'
+#        alias a2modules='sudo /Applications/MAMP/Library/bin/apachectl -l'
+#        alias a2log='tail -f /Applications/MAMP/logs/*'
+#        #alias a2log='tail -f /Applications/MAMP/logs/apache_error.log /Applications/MAMP/logs/php_error.log /Applications/MAMP/logs/mysql_error_log.err'
+#    elif which apache2ctl &> /dev/null; then
+#        alias a2restart='sudo apache2ctl restart'
+#        alias a2modules='sudo apache2ctl -l'
+#        if [ -f '/varlog/apache2/error_log' ]
+#            alias a2log='tail -f /var/log/apache2/error_log'
+#        then
+#            alias a2log='tail -f /var/log/apache2/error.log'
+#        fi
+#    elif which apachectl &> /dev/null; then
+#        alias a2restart='sudo apachectl restart'
+#        alias a2modules='sudo apachectl -l'
+#        if [ -f '/varlog/apache/error_log' ]
+#            alias a2log='tail -f /var/log/apache/error_log'
+#        then
+#            alias a2log='tail -f /var/log/apache/error.log'
+#        fi
+#    else
+#        alias a2restart='sudo /etc/init.d/httpd restart'
+#        alias a2modules='httpd -t -D DUMP_MODULES'
+#        alias a2log='tail -f /var/log/apache2/error.log'
+#    fi
+#}
+
+# PHP Shortcuts
+php_config_file='';
+php_error_log_file='';
+__php_aliases()
+{
+    php_config_file=`php -i | grep -i "loaded.*config.*file.*php.ini" | cut -d">" -f2 | sed "s/^ *//"`;
+    php_error_log_file=`php -i | grep 'error_log =>' | sed 's/^\([^=]*\=\>\s*\)\([^=]*\).*$/\2/g'`;
+}
+__php_aliases
+alias vimphp='sudo vim $php_config_file';
+alias tailphp='sudo tail -f $php_error_log_file';
+
+# LAMP Log Shortcuts
+alias vimmamp='sudo vim -O /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf /Applications/MAMP/conf/apache/httpd.conf /Applications/MAMP/bin/php/php5.3.6/conf/php.ini'
+alias tailmamp='tail -f /Applications/MAMP/logs/apache_error.log /Applications/MAMP/logs/php_error.log /Applications/MAMP/logs/mysql_error_log.err /Volumes/Data/Users/jpurcell/src/sites/current/htdocs/files/log-'$(date +%F)'.php'
+#alias taillamp='tail -f /var/log/mysql/binlog /var/log/mysql/error_log /var/log/mysql/slow_queries /var/log/apache2/error_log /var/log/apache2/access_log /Volumes/Data/Users/jpurcell/src/sites/current/htdocs/files/log-'$(date +%F)'.php'
+alias vimlamp='sudo vim -O $apache_config_file $apache_vhosts_file $php_config_file';
+alias taillamp='tail -f /var/log/mysql/binlog /var/log/mysql/error_log /var/log/mysql/slow_queries $apache_error_log $apache_access_log $php_error_log_file /Volumes/Data/Users/jpurcell/src/sites/current/htdocs/files/log-'$(date +%F)'.php'
 
 # Application Shortcuts
 #alias ff=`__firefox` # open ff from command line
@@ -175,11 +245,14 @@ __vimgrep ()
     fi
 }
 alias vimgrep='__vimgrep $@'
+alias jmp='jump'
 
 # thank you http://ruslanspivak.com/2010/06/02/urlencode-and-urldecode-from-a-command-line/
 # tried so many others, even writing my own...
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
 alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
+alias makebigfile='dd if=/dev/zero of=file.txt count=1024 bs=1024'
+alias a2download='echo -e "Apache Directory Download v1.0\n\nUSAGE:\n\n$ a2download http://example.com/apache/directory\n\nWhich, will then run:\n\n$ wget -w 1 -r -np -nH --cut-dirs=3 -R index.html http://example.com/apache/directory\n\n"; wget -w 1 -r -np -nH --cut-dirs=3 -R index.html $1'
 
 # php serialize and unserialize
 alias unserialize='php -r "print_r(unserialize(\$argv[1]));"'
@@ -190,7 +263,7 @@ alias vimbash='vim ~/.bashrc'
 alias vimgit='vim ~/.gitconfig'
 alias vimprofile='vim ~/.profile'
 alias vimrc='vim ~/.vimrc'
-alias vimb='vim ~/.bash_includes'
+alias vimb='vim ~/.bash_includes/'
 
 # CD shortcuts
 alias cdbin='cd /usr/local/bin;pwd'

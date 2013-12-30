@@ -2,7 +2,7 @@
 "
 " @author Joseph D. Purcell <josephdpurcell@gmail.com>
 " @created 1/1/1970
-" @modified 3/14/2013
+" @modified 12/12/13
 
 " =========================================================
 " PLUGINS:
@@ -18,7 +18,15 @@ call pathogen#infect()
 
 " =========================================================
 " KEY BINDINGS AND SHORTCUTS:
+" Reference: http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_%28Part_2%29
 " =========================================================
+
+"
+" == Vim Default Overrides
+"
+
+" make Shift-D erase to end of line and then go into insert mode
+:map <S-d> Da
 
 "
 " == Compiling and Executing ==
@@ -80,7 +88,8 @@ let @j = ":%!jshint --show-non-errors %\n"
 " auto-format JavaScript document (THIS ONE IS MAGICAL!!!)
 :map @jj :%!js-beautify %<cr>
 " minify JavaScript (THIS ONE IS MAGICAL!!!)
-:map @jm :%!yuicompress -s %<cr>
+":map @jm :%!yuicompress -s %<cr>
+:map @jm :%!uglifyjs %<cr>
 " lint AND auto-format JSON document (THIS ONE IS MAGICAL!!!)
 let @s = ":%!jsonlint %\n"
 
@@ -97,7 +106,7 @@ let @h = "yypVr"
 :map @t :.s/.*/\=strftime("\/\/ Modified: %D at %r")/<cr>
 
 "
-" == Syntax Switching ==
+" == Tab Syntax Switching ==
 "
 
 " PRIMARY: use tabs instead of spaces
@@ -131,6 +140,11 @@ nnoremap <C-a> :set invlist!<CR>
 " Previous/Next Buffer Shortcuts
 :map bp :bprev<CR>
 :map bn :bnext<CR>
+" Save/load a session
+:map @ss :mksession! ~/.vim/session.vim<cr>
+:map @sl :source ~/.vim/session.vim<cr>
+set ssop-=options    " do not store global and local values in a session
+"set ssop-=folds      " do not store folds
 
 " =========================================================
 " CONFIG:
@@ -184,7 +198,7 @@ set ruler " show the ROW,COL for where your cursor is in the file
 
 " GENERAL
 "set nowrap        " don't wrap lines
-"set backspace=indent,eol,start
+set backspace=indent,eol,start " make backspace work like most other apps
                   " allow backspacing over everything in insert mode
 "set copyindent    " copy the previous indentation on autoindenting
 "set number        " always show line numbers
@@ -319,3 +333,37 @@ let g:GPGPreferArmor=1
 "    echo result
 "endfunction
 "
+
+"
+" == Syntax Switching ==
+"
+" matches php.ini-development
+au BufWinEnter,BufRead,BufNewFile *.ini[^.]* set filetype=ini
+" matches php.ini.default
+au BufWinEnter,BufRead,BufNewFile *.ini.[^.]* set filetype=ini
+
+set clipboard+=unnamed
+"map cc :w !pbcopy
+
+
+
+au BufEnter /private/tmp/crontab.* setl backupcopy=yes
+
+map ,f [I:let nr = input("Which one: ")<Bar>exe "normal " . nr . "[\t"<CR>
+
+" Insert <Tab> or complete identifier
+" if the cursor is after a keyword character
+"function MyTabOrComplete()
+"    let col = col('.')-1
+"    if !col || getline('.')[col-1] ~- '\k'
+"        return "\<tab>"
+"    else
+"        return "\<C-N>"
+"    endif
+"endfunction
+"inoremap <Tab> <C-R>=MyTabOrComplete()<CR>
+
+
+" make Vim more browser like
+"nmap <Space> <PageDown>
+

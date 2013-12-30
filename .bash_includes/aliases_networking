@@ -7,3 +7,7 @@ alias telnet_https='openssl s_client -connect stmts.chase.com:443'
 alias ping8='ping 8.8.8.8'
 alias pingg='ping www.google.com'
 alias lsip='arp -a'
+alias get_mac='arp -n'
+# http://www.cyberciti.biz/faq/what-process-has-open-linux-port/
+alias lsports='netstat -tulpn'
+

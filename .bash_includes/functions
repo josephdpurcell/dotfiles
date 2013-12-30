@@ -184,9 +184,20 @@ __scp_dotfiles ()
 {
     local ALL="false"
     local USER_HOME=`echo ~`
-    local BASE_FILES=".bashrc .bash_profile .profile .bash_includes .vim .vimrc .gitconfig .gitignore .inputrc"
+    local BASE_FILES=".bash_includes .vim .vimrc .gitconfig .gitignore .inputrc .bashrc .bash_profile .profile"
 	local SERVER=`echo "$1" | sed "s/:.*$//g"`
 	local REMOTE_PATH=":"
+    local PORT=22
+
+    if [ "$2" = "-p" ]
+    then
+        PORT=$3
+    elif [ ! -z "$2"]
+    then
+		echo "Usage:"
+		echo "__scp_dotfiles user@server.com:"
+		exit 1
+    fi
 
     if [ -z "$1" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
     then
@@ -235,9 +246,9 @@ __scp_dotfiles ()
 
             if [ "$COPY" = "yes" ]; then
                 if [ -f $x ]; then
-                    scp $x $SERVER$REMOTE_PATH
+                    scp -P $PORT $x $SERVER$REMOTE_PATH
                 elif [ -d $x ]; then
-                    scp -r $x $SERVER$REMOTE_PATH
+                    scp -P $PORT -r $x $SERVER$REMOTE_PATH
                 else
                     echo "FATAL ERROR: file not found";
 					return 1;

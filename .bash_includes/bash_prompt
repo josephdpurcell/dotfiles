@@ -10,14 +10,16 @@ __set_bash_prompt_type()
     if [ "$kernel" = "Darwin" ]; then
         # change color for Mac
         BASH_PROMPT_TYPE=4
+        # set whether or not to use a rotating image for the end of prompt character
+        BASH_PROMPT_AWESOME=1
     else
         # change color for Linux
         BASH_PROMPT_TYPE=5
+        # set whether or not to use a rotating image for the end of prompt character
+        BASH_PROMPT_AWESOME=0
     fi
 }
 
-# set whether or not to use a rotating image for the end of prompt character
-BASH_PROMPT_AWESOME=1
 
 # Here, we echo what comes after the username,
 # i.e. george@george-desktop
@@ -87,14 +89,22 @@ then
     else
         export PS1=$PS1'$ '
     fi
+    prompt_awesome=$PS1;
 else
     prompt_reset=$PS1'$ '
     export PS1=$PS1'$ '
+    prompt_awesome=$PS1;
 fi
 
 # reset prompt to something "normal"
 resetprompt()
 {
     export PS1=$prompt_reset;
+}
+
+# change prompt back to what it was
+awesomeprompt()
+{
+    export PS1=$prompt_awesome;
 }
 
