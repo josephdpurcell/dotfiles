@@ -159,6 +159,7 @@ alias rm='rm -i'
 alias cp='cp -iv'
 alias cpf='cp -v'
 alias mv='mv -i'
+alias mvbup='__mv_file_to_file_with_date'
 if [ `uname -s` = 'Darwin' ]; then
     # add "G" flag to enable colorized output
     alias ls='ls -G'
@@ -166,14 +167,17 @@ if [ `uname -s` = 'Darwin' ]; then
     alias la='ls -1G'
     alias laa='ls -A1G'
     alias lss='ls -lhasG'
-    alias lm='ls -lhamG'
+    alias lcs='ls -lhamG'
+    alias lm='stat -f "%m%t%Sm %N" /tmp/* | sort -rn | cut -f2-'
 else
     alias ll='ls -lha'
     alias la='ls -1'
     alias laa='ls -A1'
     alias lss='ls -lhas'
-    alias lm='ls -lham'
+    alias lcs='ls -lham'
+    alias lm='find ./ -type f -maxdepth 1 -printf "%TY-%Tm-%Td %TT %p\n" | sort -r'
 fi
+alias fancyfind='echo "find ./ -maxdepth 4 -name <directory> | while read f; do grep -Rn <query> $f/config; done;"'
 # list files you cannot write to; default is maxdepth has no limit
 # todo: handle "s" bit, because it will pass -w but not the parent dir
 # Reference: http://superuser.com/a/409823/190466
@@ -238,7 +242,7 @@ alias definem='__definem $1'
 __vimgrep ()
 {
     local files;
-    files=`grep -l -R $@`;
+    files=`grep -l -R "$@"`;
     if [[ ! -z $files ]]
     then
         vim -O $files

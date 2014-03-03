@@ -4,6 +4,94 @@ function __mysqlimport ()
     echo "mysql -u root -p the_database < file_to_import.sql"
 }
 
+__get_incremented_filename ()
+{
+    local file
+    local filename
+    local extension
+    local increment
+    local limit
+    file=$1
+    filename=$(basename "$file")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    increment="${filename##*_}"
+    filename_wo_increment="${filename%_*}"
+    limit=1000
+    # since the suffix might be something like a date or a timestamp, limit the incrementer to 1000
+    # source: http://mywiki.wooledge.org/BashFAQ/054
+    if echo "$increment" | egrep '^[-+]?([0-9]+\.?|[0-9]*\.[0-9]+)$' >/dev/null
+    then
+        if [ $increment -lt $limit ]
+        then
+            increment=$((increment + 1))
+            echo $filename_wo_increment'_'$increment'.'$extension
+            return 0
+        else
+            # there is no extension yet
+            increment=2
+            echo  $filename'_'$increment'.'$extension
+            return 0
+        fi
+    else
+        # there is no extension yet
+        increment=2
+        echo  $filename'_'$increment'.'$extension
+        return 0
+    fi
+}
+
+__get_filename_with_date ()
+{
+    local file
+    local filename
+    local extension
+    local date
+    local timestamp
+    file=$1
+    filename=$(basename "$file")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    timestamp=`stat -f "%m" $file`
+    date=`echo $timestamp | gawk '{ print strftime("%Y%m%d", $0); }'`
+    echo $filename'-'$date'.'$extension
+}
+
+__mv_file_to_file_with_date ()
+{
+    local newfilename
+    local file
+    file=$1
+    path=`dirname $file`
+    filename=$(basename "$file")
+    newfilename=`__get_filename_with_date $file`
+    oldfile="$path/$filename"
+    newfile="$path/$newfilename"
+    # try 1
+    if [ -f $newfile ]
+    then
+        # try 2
+        newfilename=`__get_incremented_filename $newfile`
+        newfile="$path/$newfilename"
+        if [ -f $newfile ]
+        then
+            # try 3
+            newfilename=`__get_incremented_filename $newfile`
+            newfile="$path/$newfilename"
+            if [ -f $newfile ]
+            then
+                echo "The __mv_file_to_file_with_date command only supports up to 3 increments! Boo... :("
+            else
+                mv -i $oldfile $newfile
+            fi
+        else
+            mv -i $oldfile $newfile
+        fi
+    else
+        mv -i $oldfile $newfile
+    fi
+}
+
 __list_colors ()
 {
     # Regular Fonts
@@ -412,6 +500,36 @@ __cp_dotfiles()
             * )
                 echo "Invalid response";;
         esac
+    done
+}
+
+# an example of how to batch compress
+# TODO: modify this to batch a list of files in certain MB chunks
+__batch_compress()
+{
+    FILES=''
+    COUNT=0
+    SET=0
+    COMPRESSION='zip'
+    for x in *
+    do
+        COUNT=$(($COUNT+1))
+        FILES=$FILES" $x"
+        if [ $COUNT = 4 ]
+        then
+            SET=$(($SET+1))
+            echo $file
+            if [ $COMPRESSION = 'zip' ]
+            then
+                file="files$SET.zip"
+                zip $file $FILES
+            else
+                file="files$SET.tgz"
+                tar czvf $file $FILES
+            fi
+            FILES=''
+            COUNT=0
+        fi
     done
 }
 

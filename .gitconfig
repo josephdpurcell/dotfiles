@@ -19,7 +19,7 @@
     tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo \"\"; git for-each-ref $c --format=${c:10}' %(subject)'; git log -1 --pretty=short \"$c\"; done }; f"
     l = log --oneline
     ll = log
-    lll = log --pretty=fuller
+    lll = log --pretty=fuller --stat
     bl = branch-list
     sgi = istage
     sga = add .

@@ -1,13 +1,23 @@
 # .aliases_networking
 #
 
-alias dns_dump='sudo tcpdump -i en1 "udp port 53"'
-alias http_dump='sudo tcpdump -i en1 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)"';
 alias telnet_https='openssl s_client -connect stmts.chase.com:443'
 alias ping8='ping 8.8.8.8'
 alias pingg='ping www.google.com'
 alias lsip='arp -a'
-alias get_mac='arp -n'
+alias lsmac='arp -n'
 # http://www.cyberciti.biz/faq/what-process-has-open-linux-port/
 alias lsports='netstat -tulpn'
+function digall() {
+    dig +nocmd $@ any +multiline +noall +answer
+}
+
+# use this to test if you can transfer data over a port (i.e. test if a port is open)
+alias catport='echo -e "On the server run:\n$ nc -l 88\nThen, on the client run:\n$ nc -u 192.168.0.9 88"'
+alias catudpport='echo -e "On the server run:\n$ nc -u -l 88\nThen, on the client run:\n$ nc -u 192.168.0.9 88"'
+
+# sniffing
+alias tcpdump_dns='sudo tcpdump -i en1 "udp port 53"'
+alias tcpdump_http='sudo tcpdump -i en1 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)"';
+alias tcpdump_smtp='sudo tcpdump -i en0 tcp port 25';
 

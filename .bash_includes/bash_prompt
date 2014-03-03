@@ -44,23 +44,23 @@ fi
 # add core of prompt
 if [ "$BASH_PROMPT_TYPE" -eq 1 ]; then
     # magenta
-    export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;35m\]'
+    export PS1='\[\e[0;35m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]'
     export GREP_COLOR='1;35' # green (this may get overwritten by bash_prompt)
 elif [ "$BASH_PROMPT_TYPE" -eq 2 ]; then
     # yellow
-    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;33m\]'
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]'
     export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
 elif [ "$BASH_PROMPT_TYPE" -eq 3 ]; then
     # blue
-    export PS1='\[\e[0;34m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;34m\]'
+    export PS1='\[\e[0;34m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]'
     export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
 elif [ "$BASH_PROMPT_TYPE" -eq 4 ]; then
     # yellow with green $
-    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;32m\]'
+    export PS1='\[\e[0;33m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]'
     export GREP_COLOR='1;33' # green (this may get overwritten by bash_prompt)
 else
     # green
-    export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]\[\e[0;32m\]'
+    export PS1='\[\e[0;32m\][\u$(__environment) \W]\[\e[1;32m\]$(__git_ps1 "(%s)")\[\e[0m\]'
     export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
 fi
 
@@ -69,7 +69,7 @@ if [ "$BASH_PROMPT_AWESOME" -eq 1 ]
 then
     #export PS1=$PS1'\342\230\240 '
     prompt_reset=$PS1'$ '
-    day=`date +"%j"`
+    day=`date +"%j" | sed "s/^0*//"`
     mod=$(($day % 5))
     if [ $mod -eq 0 ]
     then

@@ -22,5 +22,6 @@ if [ `uname -s` = 'Darwin' ]; then
     alias dnsflush='dscacheutil -flushcache'
     alias lsdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "select LSQuarantineDataURLString from LSQuarantineEvent"'
     alias rmdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "delete from LSQuarantineEvent"'
+    alias killeverything='killall -KILL Finder; killall -KILL Dock; killall -KILL SystemUIServer;'
 fi
 

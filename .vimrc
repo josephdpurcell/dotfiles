@@ -80,8 +80,10 @@ let @x = ":%!xmllint --format %\n"
 let @c = ":%!csslint --ignore=ids,important,box-model,compatible-vendor-prefixes,adjoining-classes,qualified-headings %\n"
 " auto-format CSS document (THIS ONE IS MAGICAL!!!) http://mrcoles.com/blog/command-line-css-unminifier-utility/
 :map @cc :%!cssunminifier %<cr>
+" minify CSS (THIS ONE IS MAGICAL!!!); NOTE: -c 0 will put CSS on one line and is not an actual flag on yuicompress; I mod'd yuicompress
+:map @cm :%!yuicompress -c 0 -s %<cr>
 " minify CSS (THIS ONE IS MAGICAL!!!)
-:map @cm :%!yuicompress -s %<cr>
+:map @cmm :%!yuicompress -s %<cr>
 " lint JavaScript document (THIS ONE IS MAGICAL!!!)
 "let @j = ":%!jslint %\n" " I don't link jslint as much
 let @j = ":%!jshint --show-non-errors %\n"
@@ -145,6 +147,8 @@ nnoremap <C-a> :set invlist!<CR>
 :map @sl :source ~/.vim/session.vim<cr>
 set ssop-=options    " do not store global and local values in a session
 "set ssop-=folds      " do not store folds
+" Open file under cursor in vertical window (a complement to CTRL+w+f)
+:map <C-w>g :vertical wincmd f<CR><C-w>l
 
 " =========================================================
 " CONFIG:
