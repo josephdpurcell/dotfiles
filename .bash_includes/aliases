@@ -159,7 +159,7 @@ alias rm='rm -i'
 alias cp='cp -iv'
 alias cpf='cp -v'
 alias mv='mv -i'
-alias mvbup='__mv_file_to_file_with_date'
+alias mvbup='__mv_file_to_file_with_date' # See https://github.com/josephdpurcell/dotfiles/blob/master/.bash_includes/functions#L60
 if [ `uname -s` = 'Darwin' ]; then
     # add "G" flag to enable colorized output
     alias ls='ls -G'
