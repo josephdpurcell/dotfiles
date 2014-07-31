@@ -36,6 +36,7 @@ if [ `uname -s` = 'Darwin' ]; then
     export PATH=/opt/local/apache2/bin:$PATH
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
     export PATH=/usr/local/mysql/bin:$PATH
+    export PATH=~/.composer/vendor/bin:$PATH
 fi
 # If you use android emulator:
 #export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
@@ -99,7 +100,8 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 # Show a fortune at login
 # http://fortunes.cat-v.org/
 # http://fortune.smithsforge.com/
-if [ -x /opt/local/bin/fortune ]; then
+if [ -x /opt/local/bin/fortune ]
+then
     /opt/local/bin/fortune -s
 fi
 

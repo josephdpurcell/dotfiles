@@ -91,7 +91,10 @@ __apache_aliases()
     # assume access log is the same as error log just "access" instead of "error" in the filename
     apache_access_log_file="$path/${log/error/access}";
     # assume we have found a /Include.*vhosts/ match
-    vhosts=`cat $apache_config_file | grep -i "include.*vhosts" | cut -d" " -f2`;
+    if [ -f $apache_config_file ]
+    then
+      vhosts=`cat $apache_config_file | grep -i "include.*vhosts" | cut -d" " -f2`;
+    fi
     apache_vhosts_file="$path/$vhosts";
 }
 __apache_aliases
@@ -155,6 +158,7 @@ alias taillamp='tail -f /var/log/mysql/binlog /var/log/mysql/error_log /var/log/
 # Application Shortcuts
 #alias ff=`__firefox` # open ff from command line
 #alias fftunnel=`__firefox_tunnel` # tunnel
+alias g='git'
 alias rm='rm -i'
 alias cp='cp -iv'
 alias cpf='cp -v'
@@ -250,6 +254,14 @@ __vimgrep ()
 }
 alias vimgrep='__vimgrep $@'
 alias jmp='jump'
+alias im_exampleimage='convert -background "#223099" -fill "#FF8800" -pointsize 128 label:Example example.png'
+alias im_converttopdf='echo "Run:";echo "convert -page letter example.png -resize 500x -gravity North -format pdf example.pdf"'
+# ref: https://gist.github.com/khakimov/3558086
+# raw: echo -e "\e[1;40m" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
+alias matrix="echo -e \"\e[1;40m\" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters=\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()\"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf \"\033[%s;%sH\033[2;32m%s\",o,x,letter; printf \"\033[%s;%sH\033[1;37m%s\033[0;0H\",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'"
+alias matrix='cmatrix'
+# I love this one:
+alias vimwip='vim -O $(git diff --name-only)'
 
 # thank you http://ruslanspivak.com/2010/06/02/urlencode-and-urldecode-from-a-command-line/
 # tried so many others, even writing my own...

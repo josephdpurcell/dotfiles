@@ -4,13 +4,19 @@
 [core]
     quotepath = false
     autocrlf = input
-    path = /usr/libexec/git-core
+    path = /Applications/Xcode.app/Contents/Developer/usr/libexec/git-core
 [alias]
     st = status
     ci = commit
     br = branch
     co = checkout
-    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    d = diff
+    dc = diff --cached
+    dw = diff --word-diff
+    dcw = diff --cached --word-diff
+    #hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    hist = log --graph --oneline --decorate --date=short
+    #hist = log --graph --oneline --decorate --all --date=short
     type = cat-file -t
     dump = cat-file -p
     unstage = reset HEAD
@@ -42,11 +48,16 @@
     # git show HEAD^:main.cpp > old_main.cpp
     # Source: http://stackoverflow.com/a/888623
     add-pushable-hooks = "!f() { git config receive.denyCurrentBranch ignore;DIR=`git rev-parse --show-toplevel`;echo '#!'\"/bin/bash\ncd ..\nenv -i git reset --hard\" > $DIR/.git/hooks/post-receive;chmod +x $DIR/.git/hooks/post-receive; }; f"
+    # See how much work I did to make me feel good:
+    # git log --numstat --pretty="%H" --author="Joseph" 1f28eb37c8beba80e2a3f314c7193f68b2bbb046..04290eafa4e685a2072fbd6672da39c0d581b7a5 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("+%d, -%d\n", plus, minus)}'
+    # Source: http://stackoverflow.com/a/2528129
 [color]
     ui = true
 [pull]
-	rebase = true
+    rebase = true
 [merge]
-	ff = false
+    ff = false
 [remote "origin"]
-	receivepack = git receive-pack
+    receivepack = git receive-pack
+[push]
+    default = matching

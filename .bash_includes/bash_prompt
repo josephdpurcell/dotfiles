@@ -70,7 +70,7 @@ then
     #export PS1=$PS1'\342\230\240 '
     prompt_reset=$PS1'$ '
     day=`date +"%j" | sed "s/^0*//"`
-    mod=$(($day % 5))
+    mod=$(($day % 20))
     if [ $mod -eq 0 ]
     then
         export PS1=$PS1'🍀  '
@@ -86,6 +86,54 @@ then
     elif [ $mod -eq 4 ]
     then
         export PS1=$PS1'🌎  '
+    elif [ $mod -eq 5 ]
+    then
+        export PS1=$PS1'⚡  '
+    elif [ $mod -eq 6 ]
+    then
+        export PS1=$PS1'💡  '
+    elif [ $mod -eq 7 ]
+    then
+        export PS1=$PS1'💰  '
+    elif [ $mod -eq 8 ]
+    then
+        export PS1=$PS1'🎨  '
+    elif [ $mod -eq 9 ]
+    then
+        export PS1=$PS1'🔵  '
+    elif [ $mod -eq 10 ]
+    then
+        export PS1=$PS1'⚪  '
+    elif [ $mod -eq 11 ]
+    then
+        export PS1=$PS1'🔴  '
+    elif [ $mod -eq 12 ]
+    then
+        export PS1=$PS1'🔷  '
+    elif [ $mod -eq 13 ]
+    then
+        export PS1=$PS1'🔱  '
+    elif [ $mod -eq 14 ]
+    then
+        export PS1=$PS1'🌟  '
+    elif [ $mod -eq 15 ]
+    then
+        export PS1=$PS1'🔥  '
+    elif [ $mod -eq 16 ]
+    then
+        export PS1=$PS1'👍  '
+    elif [ $mod -eq 17 ]
+    then
+        export PS1=$PS1'🎩  '
+    elif [ $mod -eq 18 ]
+    then
+        export PS1=$PS1'💨  '
+    elif [ $mod -eq 19 ]
+    then
+        export PS1=$PS1'🚀  '
+    elif [ $mod -eq 20 ]
+    then
+        export PS1=$PS1'🔰  '
     else
         export PS1=$PS1'$ '
     fi

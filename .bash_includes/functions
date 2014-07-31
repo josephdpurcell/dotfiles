@@ -62,33 +62,46 @@ __mv_file_to_file_with_date ()
     local newfilename
     local file
     file=$1
-    path=`dirname $file`
-    filename=$(basename "$file")
-    newfilename=`__get_filename_with_date $file`
-    oldfile="$path/$filename"
-    newfile="$path/$newfilename"
-    # try 1
-    if [ -f $newfile ]
+    if [ ! -f $file ]
     then
-        # try 2
-        newfilename=`__get_incremented_filename $newfile`
+        echo "$file: No such file or directory"
+    else
+        path=`dirname $file`
+        filename=$(basename "$file")
+        newfilename=`__get_filename_with_date $file`
+        oldfile="$path/$filename"
         newfile="$path/$newfilename"
+        # try 1
         if [ -f $newfile ]
         then
-            # try 3
+            # try 2
             newfilename=`__get_incremented_filename $newfile`
             newfile="$path/$newfilename"
             if [ -f $newfile ]
             then
-                echo "The __mv_file_to_file_with_date command only supports up to 3 increments! Boo... :("
+                # try 3
+                newfilename=`__get_incremented_filename $newfile`
+                newfile="$path/$newfilename"
+                if [ -f $newfile ]
+                then
+                    # try 4
+                    newfilename=`__get_incremented_filename $newfile`
+                    newfile="$path/$newfilename"
+                    if [ -f $newfile ]
+                    then
+                        echo "The __mv_file_to_file_with_date command only supports up to 4 increments! Boo... :("
+                    else
+                        mv -i $oldfile $newfile
+                    fi
+                else
+                    mv -i $oldfile $newfile
+                fi
             else
                 mv -i $oldfile $newfile
             fi
         else
             mv -i $oldfile $newfile
         fi
-    else
-        mv -i $oldfile $newfile
     fi
 }
 
