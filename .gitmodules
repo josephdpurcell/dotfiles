@@ -1,3 +1,32 @@
 [submodule ".vim/bundle/ctrlp.vim"]
 	path = .vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim.git
+    ignore = dirty
+[submodule ".vim/bundle/DBGp-Remote-Debugger-Interface"]
+	path = .vim/bundle/DBGp-Remote-Debugger-Interface
+	url = https://github.com/vim-scripts/DBGp-Remote-Debugger-Interface.git
+    ignore = dirty
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+    ignore = dirty
+[submodule ".vim/bundle/supertab"]
+	path = .vim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-abolish"]
+	path = .vim/bundle/vim-abolish
+	url = https://github.com/tpope/vim-abolish.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-autotag"]
+	path = .vim/bundle/vim-autotag
+	url = https://github.com/craigemery/vim-autotag.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-characterize"]
+	path = .vim/bundle/vim-characterize
+	url = https://github.com/tpope/vim-characterize.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-gnupg"]
+	path = .vim/bundle/vim-gnupg
+	url = https://github.com/jamessan/vim-gnupg.git
+    ignore = dirty

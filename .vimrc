@@ -95,7 +95,13 @@ map @jj :%!js-beautify %<cr>
 ":map @jm :%!yuicompress -s %<cr>
 map @jm :%!uglifyjs %<cr>
 " lint AND auto-format JSON document (THIS ONE IS MAGICAL!!!)
-let @s = ":%!jsonlint %\n"
+"let @s = ":%!jsonlint %\n"
+" source: http://visibletrap.blogspot.de/2010/05/vim-how-to-format-and-syntax-highlight.html
+"map <leader>jt  <Esc>:%!json_pp -f json -t json<CR>
+"map @s <Esc>:%!json_pp -f json -t json<CR>
+" alt: jq http://stedolan.github.io/jq/tutorial/
+" source: http://stackoverflow.com/a/24951417/990642
+map @s <Esc>:%!python -m json.tool<CR>
 
 "
 " == Code Inserts and Helpers ==
@@ -388,6 +394,8 @@ set tags=.tags;/
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " xdebug
-let g:debuggerTimeout = 20
+let g:debuggerTimeout = 5
 map <S-B> :Bp<Enter>
+
+set wildignore+=*/cache/*
 
