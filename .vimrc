@@ -4,6 +4,15 @@
 " @created 1/1/1970
 " @modified 7/6/2014
 
+" Thank you http://blog.sanctum.geek.nz/vim-annoyances/
+" Also thank you http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+
+" change the mapleader from \ to ,
+"let mapleader=","
+map <C-q> :q<CR>
+" allow ctrl+q to pass to vim:
+"silent !stty -ixon > /dev/null 2>/dev/null
+
 " =========================================================
 " PLUGINS:
 " =========================================================
@@ -15,6 +24,12 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 "nnoremap <C-t> :TlistToggle<CR>
 
 call pathogen#infect()
+
+inoremap <Leader>u <C-O>:call PhpInsertUse()<CR>
+noremap <Leader>u :call PhpInsertUse()<CR>
+
+"inoremap <Leader>e <C-O>:call PhpExpandClass()<CR>
+"noremap <Leader>e :call PhpExpandClass()<CR>
 
 " =========================================================
 " KEY BINDINGS AND SHORTCUTS:
@@ -28,12 +43,19 @@ call pathogen#infect()
 " make Shift-D erase to end of line and then go into insert mode
 map <S-d> Da
 
+" make d-e erase word and then go into insert mode
+nmap de dei
+
+nmap vw bve
+
+nmap dw bde
+
 "
 " == Compiling and Executing ==
 "
 
 " compile with g++
-map @g :!file=% && file=${file\%.c} && g++ % -o $file<cr>
+"map @g :!file=% && file=${file\%.c} && g++ % -o $file<cr>
 " make
 let @m = ":!make"
 " make the current file
@@ -46,6 +68,8 @@ let @r = ":!thisfile=% && rst2pdf --stylesheet-path=lmodern % && open ${thisfile
 map @cl :!lessc % > %:r.css<cr>
 " run PHP file
 let @p = ":!php %\n"
+" run GOLANG file
+let @g = ":!go run %\n"
 " run Node.js file
 let @n = ":!node %\n"
 " run executable (i.e. a bash script)
@@ -101,7 +125,13 @@ map @jm :%!uglifyjs %<cr>
 "map @s <Esc>:%!json_pp -f json -t json<CR>
 " alt: jq http://stedolan.github.io/jq/tutorial/
 " source: http://stackoverflow.com/a/24951417/990642
-map @s <Esc>:%!python -m json.tool<CR>
+" Note: this sorts keys
+"map @s <Esc>:%!python -m json.tool<CR>
+" source: http://www.skorks.com/2013/04/the-best-way-to-pretty-print-json-on-the-command-line/
+map @s <Esc>:%!json_reformat<CR>
+map @sm :%!json_reformat -m<cr>
+" alt:
+"map @sm :%!jq --compact-output . %<cr>
 
 "
 " == Code Inserts and Helpers ==
@@ -135,8 +165,6 @@ let @0 = ":set noet\n"
 
 " This will set the current working directory to that of the current opened file
 let @d = ":lcd %:p:h\n"
-" change the mapleader from \ to ,
-let mapleader=","
 " Opens goto file in new buffer
 map gf :edit <cfile><CR>
 " toggle line numbers using CTRL+n
@@ -150,11 +178,6 @@ nnoremap <C-a> :set invlist!<CR>
 " Previous/Next Buffer Shortcuts
 map bp :bprev<CR>
 map bn :bnext<CR>
-" Save/load a session
-map @ss :mksession! ~/.vim/session.vim<cr>
-map @sl :source ~/.vim/session.vim<cr>
-set ssop-=options    " do not store global and local values in a session
-"set ssop-=folds      " do not store folds
 " Open file under cursor in vertical window (a complement to CTRL+w+f)
 map <C-w>g :vertical wincmd f<CR><C-w>l
 " clear search highlighting
@@ -215,7 +238,7 @@ set ruler " show the ROW,COL for where your cursor is in the file
 " GENERAL
 "set nowrap        " don't wrap lines
 set backspace=indent,eol,start " make backspace work like most other apps
-                  " allow backspacing over everything in insert mode
+                               " allow backspacing over everything in insert mode
 "set copyindent    " copy the previous indentation on autoindenting
 "set number        " always show line numbers
 set showmatch     " set show matching parenthesis
@@ -226,9 +249,7 @@ set smartcase     " ignore case if search pattern is all lowercase,
 nmap <silent> ,/ :nohlsearch<CR>
                   " auto remove highlighted searches
 set incsearch     " show search matches as you type
-set nobackup
-set nowritebackup
-set noswapfile
+
 
 " a sweet mapping to switch an opened file to sudo (A MUST HAVE!!!)
 cmap w!! w !sudo tee % >/dev/null
@@ -267,7 +288,6 @@ endif
 " HISTORY
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
-set wildignore=*.swp,*.bak,*.pyc,*.class
 set title                " change the terminal's title
 set visualbell           " don't beep
 set noerrorbells         " don't beep
@@ -283,15 +303,35 @@ au BufRead,BufNewFile functions set filetype=sh
 au BufRead,BufNewFile functions_* set filetype=sh
 au BufRead,BufNewFile bash_prompt set filetype=sh
 au BufRead,BufNewFile inputrc set filetype=sh
-au BufRead,BufNewFile gitconfig set filetype=unix
-au BufRead,BufNewFile gitignore set filetype=unix
 
 au BufRead,BufNewFile .aliases* set filetype=sh
 au BufRead,BufNewFile .functions* set filetype=sh
 au BufRead,BufNewFile .bash_prompt set filetype=sh
 au BufRead,BufNewFile .inputrc set filetype=sh
-au BufRead,BufNewFile .gitconfig set filetype=unix
-au BufRead,BufNewFile .gitignore set filetype=unix
+au BufRead,BufNewFile .gitconfig set filetype=gitconfig
+au BufRead,BufNewFile .gitignore set filetype=gitconfig
+au BufRead,BufNewFile Vagrantfile set filetype=ruby
+au BufRead,BufNewFile VagrantFile set filetype=ruby
+
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufNewFile,BufReadPost *.md set spell
+
+autocmd BufRead,BufNewFile COMMIT_EDITMSG set filetype=gitcommit spell
+
+" https://github.com/leafgarland/typescript-vim
+au BufRead,BufNewFile *.ts set filetype=typescript
+
+" https://github.com/vim-scripts/JSON.vim
+au BufRead,BufNewFile *.json set filetype=json 
+
+" Use tabs instead of spaces for golang
+au BufRead,BufNewFile *.go set ts=4 sw=4 sts=4 cino=>4 noet
+
+" Use 2 spaces for js
+au BufRead,BufNewFile *.js set ts=2 sw=2 sts=2 cino=>2 et
+
+" Use 2 spaces for html
+au BufRead,BufNewFile *.html set ts=2 sw=2 sts=2 cino=>2 et
 
 nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
@@ -383,19 +423,210 @@ map ,f [I:let nr = input("Which one: ")<Bar>exe "normal " . nr . "[\t"<CR>
 " make Vim more browser like
 "nmap <Space> <PageDown>
 
+" xdebug
+let g:debuggerTimeout = 5
+"map <S-B> :Bp<Enter>
+
+" phpcs
+"let g:phpqa_codesniffer_args = "--standard=PSR2"
+let g:phpqa_codesniffer_args = "--standard=Drupal"
+let g:phpqa_codesniffer_autorun = 1
+" phpmd
+"let g:phpqa_messdetector_ruleset = 'phpmd_ruleset.xml'
+let g:phpqa_messdetector_autorun = 1
+let g:phpqa_open_loc = 1
+
+nnoremap <C-u> :GundoToggle<CR>
+
+" use relative numbering so you can jump
+"set relativenumber
+
+" supposedly draws the screen faster
+set ttyfast
+
+"let loaded_matchparen = 1
+
+set wildmenu
+set wildmode=longest:full
+
+set wildignore=*.swp,*.bak,*.pyc,*.class,*~
+set wildignore+=*/cache/*
+
+" C-X C-F enter tab copmletion mode of file name
+inoremap <Tab> <C-X><C-F>
+
+" Don't show intro screen
+set shortmess+=I
+
+" always show status menu
+set laststatus=2
+
+" =========================================================
+" Disable some default mappings
+" =========================================================
+
+nnoremap Q <nop>
+nnoremap K <nop>
+
+" =========================================================
+" Backup, Swap, and History Files
+" =========================================================
+
+set backupdir=~/.vim/tmp/backup
+set nobackup
+set nowritebackup
+
+set directory=~/.vim/tmp/swap
+set noswapfile
+
+" Tell Vim to create .<FILENAME>.un~ files to persist change history
+set undodir=~/.vim/tmp/history
+set undofile
+
+" =========================================================
+" Search
+" =========================================================
+
+set tags=.ctags
+
+if has('cscope')
+    " Search ctags, then cscope.
+    set cscopetagorder=1
+
+    " Do not use cstag instead of tag.
+    set nocscopetag
+
+    " Add any database in current directory.
+    set nocscopeverbose
+    if filereadable("cscope.out")
+        cs add cscope.out
+    " Else add database pointed to by environment.
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+
+    " Find all occurrences of a function calling a function.
+    "map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
+    "map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
+
+    " Shortcuts for each option:
+    "   0 or s: Find this C symbol
+    "   1 or g: Find this definition
+    "   2 or d: Find functions called by this function
+    "   3 or c: Find functions calling this function
+    "   4 or t: Find this text string
+    "   6 or e: Find this egrep pattern
+    "   7 or f: Find this file
+    "   8 or i: Find files #including this file
+    nmap <C-[><C-s> :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[><C-g> :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[><C-c> :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[><C-t> :cs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[><C-e> :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[><C-f> :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-[><C-i> :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-[><C-d> :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+    " Using 'CTRL-spacebar' then a search type makes the vim window
+    " split horizontally, with search result displayed in
+    " the new window.
+
+    "nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+    "nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    "nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+    " Hitting CTRL-space *twice* before the search type does a vertical
+    " split instead of a horizontal one
+
+    "nmap <C-Space><C-Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space><C-Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space><C-Space>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space><C-Space>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space><C-Space>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    "nmap <C-Space><C-Space>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    "nmap <C-Space><C-Space>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+endif
+
+" =========================================================
+" Finding/opening files
+" =========================================================
+
 " AWESOME! CTRL-P with tags. Yes.
 "nnoremap @<C-p> :CtrlPTag<CR>
-nnoremap <C-t><C-p> :CtrlPTag<CR>
-nnoremap <C-g><C-p> :CtrlPBufTag<CR>
-
-set tags=.tags;/
+"nnoremap <C-t><C-p> :CtrlPTag<CR>
+"nnoremap <C-g><C-p> :CtrlPBufTag<CR>
+let g:ctrlp_use_caching = 1
+let g:ctrlp_cache_dir = "~/.vim/tmp/ctrlp"
+let g:ctrlp_clear_cache_on_exit = 0
+nnoremap <C-d><C-p> :CtrlPClearCache<CR>
 
 " good tags help: http://vim.wikia.com/wiki/Browsing_programs_with_tags
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
-" xdebug
-let g:debuggerTimeout = 5
-map <S-B> :Bp<Enter>
 
-set wildignore+=*/cache/*
+" =========================================================
+" Git Gutter
+" =========================================================
 
+let g:gitgutter_enabled = 0
+let g:gitgutter_highlight_lines = 1
+let g:gitgutter_realtime = 1
+
+nnoremap <C-g><C-g> :GitGutterToggle<CR>
+"nmap <C-g><C-g> <Plug>GitGutterToggle
+
+" keep selection after in/outdent
+"vnoremap < <gv
+"vnoremap > >gv
+
+" override Nerd tree's next/prev shortcuts to allow us to use them
+" use C-n and C-p instead of C-j and C-k
+let NERDTreeMapJumpNextSibling="<C-n>"
+let NERDTreeMapJumpPrevSibling="<C-p>"
+
+" easy split navigation
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+
+" Use tab to navigate splits.
+" Source: https://github.com/clarkduvall/dotfiles/blob/master/files/.vimrc#L77
+"nnoremap <tab> <C-w><C-w>
+"nnoremap <s-tab> <C-w><left>
+
+nnoremap ; :
+
+nmap <C-_> :resize +900<CR>
+"nmap <C-=> :resize +900<CR>
+nmap <C-\> :vertical resize +900<CR>
+
+"nnoremap <C-3> g#
+"nnoremap <C-8> g*
+
+"map <C-q> :q<CR>
+"noremap <Leader>q :q<CR>
+
+" =========================================================
+" Sessions
+" =========================================================
+
+" Save/load a session
+map @ss :mksession! ~/.vim/session.vim<cr>
+map @sl :source ~/.vim/session.vim<cr>
+set ssop-=options    " do not store global and local values in a session
+"set ssop-=folds      " do not store folds
+
+" Expose whitespace
+" Source: http://nvie.com/posts/how-i-boosted-my-vim/
+"set list
+"set listchars=tab:>.,trail:.,extends:#,nbsp:.
+" allow tabs in html and xml
+"autocmd filetype html,xml set listchars-=tab:>.

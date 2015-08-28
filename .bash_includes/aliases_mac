@@ -24,5 +24,9 @@ if [ `uname -s` = 'Darwin' ]; then
     alias rmdownloads='sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 "delete from LSQuarantineEvent"'
     alias killeverything='killall -KILL Finder; killall -KILL Dock; killall -KILL SystemUIServer;'
     alias lsblk='diskutil list && true' # && true prevents any params from being read
+    # Create a 2.2 GB ramdisk.
+    alias mkramdisk='diskutil erasevolume HFS+ "RAM disk" `hdiutil attach -nomount ram://4629672`'
+    # If Airplay doesn't work, kill the audio to restart it and it will work.
+    alias killaudio='sudo killall coreaudiod'
 fi
 

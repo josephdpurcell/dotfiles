@@ -3,3 +3,8 @@
 .netrwhist
 #robots.txt
 .tags
+.vim/session*
+.vim/bundle/trash
+.vim/tmp
+.bash_includes/aliases_home
+.bash_includes/aliases_palantir

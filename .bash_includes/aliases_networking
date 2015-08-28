@@ -33,3 +33,9 @@ alias tcpdump_smtp='sudo tcpdump -i en0 tcp port 25';
 # iptables
 alias iptl='iptables --list --line-numbers --numeric'
 
+
+# Always print headers
+# Source: http://attilaolah.eu/2014/12/18/my-curl-alias/
+alias c="curl -s --dump-header /dev/stderr"
+
+alias tunnelvagrant="ssh \$(vagrant ssh-config | awk '{print \" -o \"\$1\"=\"\$2}') -CND 8080 localhost"

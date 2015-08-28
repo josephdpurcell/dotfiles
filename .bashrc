@@ -23,10 +23,15 @@ umask 002
 #   export PATH=$PATH:/sbin
 #
 
+export GOPATH=~/
+export GOBIN=~/bin
 export PATH=$PATH:/sbin
 #export PATH=$PATH:/usr/bin
+export PATH=$PATH:~/bin
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/share/pear/bin:$PATH
+export PATH=/opt/local/lib/php/pear/bin:$PATH
+export PATH=/usr/lib/php/pear:$PATH
 if [ `uname -s` = 'Darwin' ]; then
     export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
     # For MAMP:
@@ -47,8 +52,8 @@ fi
 
 export APPLICATION_ENV='development'
 export ENVIRONMENT='development'
-export HISTFILESIZE=2000000
-export HISTSIZE=15000
+export HISTFILESIZE=20000000
+export HISTSIZE=100000
 
 # have grep highlight words found
 export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
@@ -104,4 +109,10 @@ if [ -x /opt/local/bin/fortune ]
 then
     /opt/local/bin/fortune -s
 fi
+
+PERL_MB_OPT="--install_base \"/Users/joepurcell/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/joepurcell/perl5"; export PERL_MM_OPT;
+
+# Allow CTRL+Q to pass to Vim.
+stty -ixon
 

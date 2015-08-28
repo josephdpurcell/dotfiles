@@ -207,7 +207,9 @@ lsw ()
     IFS=$oIFS
 }
 alias lsproc='sudo netstat -tulpn'
-alias rgrep='grep -Rn' # recursive grep and show line number
+alias grep='grep -i' # ignore case by default
+alias grepr='grep -Rn' # recursive grep and show line number
+alias grepl='grep -Rl'
 alias psgrep='ps aux | grep'
 alias passgen='echo "Options:
     -m Length of password
@@ -261,7 +263,7 @@ alias im_converttopdf='echo "Run:";echo "convert -page letter example.png -resiz
 alias matrix="echo -e \"\e[1;40m\" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters=\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()\"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf \"\033[%s;%sH\033[2;32m%s\",o,x,letter; printf \"\033[%s;%sH\033[1;37m%s\033[0;0H\",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'"
 alias matrix='cmatrix'
 # I love this one:
-alias vimwip='vim -O $(git diff --name-only)'
+alias vimwip='vim -O $(git diff --name-only | sort | uniq)'
 
 # thank you http://ruslanspivak.com/2010/06/02/urlencode-and-urldecode-from-a-command-line/
 # tried so many others, even writing my own...
@@ -280,6 +282,9 @@ alias vimgit='vim ~/.gitconfig'
 alias vimprofile='vim ~/.profile'
 alias vimrc='vim ~/.vimrc'
 alias vimb='vim ~/.bash_includes/'
+alias vimindex='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.php" > ./cscope.files; cscope -b -q -k -R;'
+alias vimindexjs='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.js" > ./cscope.files; cscope -b -q -k -R;'
+alias vimindexcs='echo "todo: make cscope realtive"; ctags; find "`pwd`" -name "*.cs" -exec echo \"{}\" \; > cscope.files; cscope -b -q -k -R'
 
 # CD shortcuts
 alias cdbin='cd /usr/local/bin;pwd'
@@ -287,6 +292,18 @@ alias cdrepos='cd /usr/local/share;pwd'
 alias cdlib='cd /usr/local/lib;pwd'
 alias cdmount='cd /opt/mount;pwd'
 alias cdvim='cd ~/.vim/'
+alias ..='cd ..' # source: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_05.html
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias ..2='cd ../..'
+alias ..3='cd ../../..'
+alias ..4='cd ../../../..'
+alias ..5='cd ../../../../..'
+alias cdp='cd ~/src/github.com/palantirnet/'
+alias cdj='cd ~/src/github.com/josephdpurcell/'
+alias cdsrc='cd ~/src/'
 
 # Mounting Shortcuts
 # Example (MacOSX):

@@ -1,10 +1,11 @@
 [user]
-    name = Joseph D. Purcell
-    email = josephdpurcell@gmail.com
+	name = Joseph D. Purcell
+	email = josephdpurcell@gmail.com
 [core]
     quotepath = false
     autocrlf = input
-    path = /Applications/Xcode.app/Contents/Developer/usr/libexec/git-core
+	path = /Applications/Xcode.app/Contents/Developer/usr/libexec/git-core
+	excludesfile = /Users/joepurcell/.gitignore
 [alias]
     st = status
     ci = commit
@@ -26,16 +27,19 @@
     l = log --oneline
     ll = log
     lll = log --pretty=fuller --stat
-    bl = branch-list
-    sgi = istage
+    bl = branch-list -o -committerdate
+    # my istage isn't nearly as cool as git add -ip
+    #sgi = istage
+    sgi = add -ip
+    istage = add -ip
     sga = add .
     sg = stage
     sl = stash list
     sll = stash-list
-    slll = stash-list --full
+    slll = !sh -c \"git stash show -p stash@{$1}\" -
     sa = !sh -c \"git stash apply stash@{$1}\" -
     sd = !sh -c \"git stash drop stash@{$1}\" -
-    ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save $1; fi }; f"
+    ss = "!f() { if [ -z $1 ]; then echo \"You must specify a stash name.\"; else git stash save --include-untracked $1; fi }; f"
     sp = stash pop
     # this doesn't work bc you can't edit a prior commmit, only the most recent
     #change-date = "!f() { if [[ -z $1 ]] || [[ -z $2 ]]; then echo \"You must specify a date and commit hash:\ngit commit-date 'Thu Apr 17 10:06:40 2013 -0400' 911b21b4594dbfcdf461d12a0bf6e0d844ac0239\"; else env GIT_COMMITTER_DATE=\"$1\" git commit --amend -C \"$2\" --date=\"$1\"; fi }; f"
@@ -53,11 +57,20 @@
     # Source: http://stackoverflow.com/a/2528129
 [color]
     ui = true
+# tips: http://shallowsky.com/blog/programming/gitcolors.html
+[color "diff"]
+    plain = white normal
+    #meta = yellow normal
+    #frag = magenta normal
+    old = red normal
+    new = green normal
+    commit = yellow
+    #whitespace = white blink
 [pull]
-    rebase = true
+	rebase = true
 [merge]
-    ff = false
+	ff = false
 [remote "origin"]
-    receivepack = git receive-pack
+	receivepack = git receive-pack
 [push]
-    default = matching
+	default = matching
