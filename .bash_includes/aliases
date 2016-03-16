@@ -283,7 +283,8 @@ alias vimprofile='vim ~/.profile'
 alias vimrc='vim ~/.vimrc'
 alias vimb='vim ~/.bash_includes/'
 alias vimindex='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.php" > ./cscope.files; cscope -b -q -k -R;'
-alias vimindexjs='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.js" > ./cscope.files; cscope -b -q -k -R;'
+#alias vimindexjs='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.js" > ./cscope.files; cscope -b -q -k -R;'
+alias vimindexjs='ctags'
 alias vimindexcs='echo "todo: make cscope realtive"; ctags; find "`pwd`" -name "*.cs" -exec echo \"{}\" \; > cscope.files; cscope -b -q -k -R'
 
 # CD shortcuts
@@ -304,6 +305,7 @@ alias ..5='cd ../../../../..'
 alias cdp='cd ~/src/github.com/palantirnet/'
 alias cdj='cd ~/src/github.com/josephdpurcell/'
 alias cdsrc='cd ~/src/'
+alias cdg='cd ~/src/github.com'
 
 # Mounting Shortcuts
 # Example (MacOSX):

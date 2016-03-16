@@ -25,11 +25,14 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 call pathogen#infect()
 
+" Generate help tags for plugins.
+call pathogen#helptags()
+
 inoremap <Leader>u <C-O>:call PhpInsertUse()<CR>
 noremap <Leader>u :call PhpInsertUse()<CR>
 
-"inoremap <Leader>e <C-O>:call PhpExpandClass()<CR>
-"noremap <Leader>e :call PhpExpandClass()<CR>
+inoremap <Leader>e <C-O>:call PhpExpandClass()<CR>
+noremap <Leader>e :call PhpExpandClass()<CR>
 
 " =========================================================
 " KEY BINDINGS AND SHORTCUTS:
@@ -44,11 +47,12 @@ noremap <Leader>u :call PhpInsertUse()<CR>
 map <S-d> Da
 
 " make d-e erase word and then go into insert mode
-nmap de dei
+"nmap de dei
 
-nmap vw bve
+"nmap vw bve
 
-nmap dw bde
+"nmap dw bde
+nmap dw bcw
 
 "
 " == Compiling and Executing ==
@@ -163,6 +167,15 @@ let @0 = ":set noet\n"
 " == Vim Helpers ==
 "
 
+function! TogglePaste()
+  if (&syntax == 'off')
+    set syntax=on
+  else
+    set syntax=off
+  endif
+  set paste!
+endfunction
+
 " This will set the current working directory to that of the current opened file
 let @d = ":lcd %:p:h\n"
 " Opens goto file in new buffer
@@ -172,7 +185,9 @@ nnoremap <C-n> :set nonumber!<CR>
 " toggle paste
 set pastetoggle=<F2>
 " toggle paste when function keys aren't avail (i is for toggling insert mode)
+"nnoremap <C-i> :call TogglePaste()<CR>
 nnoremap <C-i> :set paste!<CR>
+map <C-v> :r !pbpaste<CR>
 " toggle hidden characters
 nnoremap <C-a> :set invlist!<CR>
 " Previous/Next Buffer Shortcuts
@@ -254,6 +269,9 @@ set incsearch     " show search matches as you type
 " a sweet mapping to switch an opened file to sudo (A MUST HAVE!!!)
 cmap w!! w !sudo tee % >/dev/null
 
+" CTRL+S to save
+nmap <C-S> :w<CR>
+
 " COLOR SCHEME
 if &t_Co >= 256 || has("gui_running")
   " use a color scheme if there are at least 256 colors
@@ -333,6 +351,7 @@ au BufRead,BufNewFile *.js set ts=2 sw=2 sts=2 cino=>2 et
 " Use 2 spaces for html
 au BufRead,BufNewFile *.html set ts=2 sw=2 sts=2 cino=>2 et
 
+" lol, wut?
 nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 "set fileformats=unix,mac,dos
@@ -424,15 +443,35 @@ map ,f [I:let nr = input("Which one: ")<Bar>exe "normal " . nr . "[\t"<CR>
 "nmap <Space> <PageDown>
 
 " xdebug
-let g:debuggerTimeout = 5
+"let g:debuggerTimeout = 5
 "map <S-B> :Bp<Enter>
+"map <C-X> <F5>
+let g:vdebug_options= {
+\    "port" : 9000,
+\    "server" : '',
+\    "timeout" : 20,
+\    "on_close" : 'detach',
+\    "break_on_open" : 1,
+\    "ide_key" : '',
+\    "path_maps" : {
+\        "/var/www/dev1.d8.local/web": "/Users/joepurcell/src/sites/dev1.d8.local/web"
+\    },
+\    "debug_window_level" : 0,
+\    "debug_file_level" : 0,
+\    "debug_file" : "",
+\    "watch_window_style" : 'expanded',
+\    "marker_default" : '⬦',
+\    "marker_closed_tree" : '▸',
+\    "marker_open_tree" : '▾'
+\}
+
 
 " phpcs
 "let g:phpqa_codesniffer_args = "--standard=PSR2"
 let g:phpqa_codesniffer_args = "--standard=Drupal"
 let g:phpqa_codesniffer_autorun = 1
 " phpmd
-"let g:phpqa_messdetector_ruleset = 'phpmd_ruleset.xml'
+let g:phpqa_messdetector_ruleset = 'phpmd_ruleset.xml'
 let g:phpqa_messdetector_autorun = 1
 let g:phpqa_open_loc = 1
 
@@ -451,6 +490,10 @@ set wildmode=longest:full
 
 set wildignore=*.swp,*.bak,*.pyc,*.class,*~
 set wildignore+=*/cache/*
+set wildignore+=*/build/*
+set wildignore+=*/tmp/*
+set wildignore+=*/node_modules/*
+set wildignore+=*/vendor/*
 
 " C-X C-F enter tab copmletion mode of file name
 inoremap <Tab> <C-X><C-F>

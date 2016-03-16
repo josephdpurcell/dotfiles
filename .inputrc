@@ -1,13 +1,5 @@
 # -*- mode: conf -*-
 
-# =================================
-# Bash Terminal Input Configuration
-# =================================
-#
-# :Author: Bill Purcell
-# :Email: william@whpiv.net
-# :Date: April 1, 2011
-#
 # Up will go back one command.
 
 "\e[A":history-search-backward

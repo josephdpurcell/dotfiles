@@ -7,6 +7,7 @@
 --exclude=cache
 --exclude=node_modules
 --exclude=build
+--exclude=bin
 --PHP-kinds=+cf-v
 --regex-php=/^[ \t]*trait[ \t]+([a-z0_9_]+)/\1/t,traits/i
 --regex-js=/(,|(;|^)[ \t]*(var|let|([A-Za-z_$][A-Za-z0-9_$.]+\.)*))[ \t]*([A-Za-z0-9_$]+)[ \t]*=[ \t]*\{/\5/,object/

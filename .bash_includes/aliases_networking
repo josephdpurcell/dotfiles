@@ -5,6 +5,15 @@ alias telnet_https='openssl s_client -connect stmts.chase.com:443'
 alias ping8='ping 8.8.8.8'
 alias pingg='ping www.google.com'
 alias lsip='arp -a'
+__lsip ()
+{
+    echo "Pining all IP addresses on the network to clear ARP cache."
+    for ip in 10.0.1.{1..254}; do
+        ping -c 1 $ip | grep "64 bytes" &
+    done
+    sleep 1
+    arp -a
+}
 alias lsmac='arp -n'
 if [ `uname -s` = 'Darwin' ]; then
     # http://stackoverflow.com/a/21295146/990642
