@@ -54,3 +54,7 @@
 	path = .vim/bundle/vim-php-namespace
 	url = https://github.com/arnaud-lb/vim-php-namespace.git
     ignore = dirty
+[submodule ".vim/bundle/vim-phpqa"]
+	path = .vim/bundle/vim-phpqa
+	url = https://github.com/joonty/vim-phpqa.git
+    ignore = dirty
