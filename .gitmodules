@@ -38,3 +38,7 @@
 	path = .vim/bundle/gundo
 	url = https://github.com/sjl/gundo.vim
     ignore = dirty
+[submodule ".vim/bundle/vdebug"]
+	path = .vim/bundle/vdebug
+	url = https://github.com/joonty/vdebug.git
+    ignore = dirty
