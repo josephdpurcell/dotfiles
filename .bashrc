@@ -56,8 +56,9 @@ export HISTFILESIZE=20000000
 export HISTSIZE=100000
 
 # have grep highlight words found
-export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
-export GREP_OPTIONS='--color=auto'
+# NOTE: deprecated on linux??
+#export GREP_COLOR='1;32' # green (this may get overwritten by bash_prompt)
+#export GREP_OPTIONS='--color=auto'
 
 export EDITOR=vim
 export VISUAL=vim

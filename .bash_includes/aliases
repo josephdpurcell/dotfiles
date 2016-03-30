@@ -97,7 +97,10 @@ __apache_aliases()
     fi
     apache_vhosts_file="$path/$vhosts";
 }
-__apache_aliases
+if [ `which apachectl` ]
+then
+    __apache_aliases
+fi
 alias vimhttpd="sudo vim $apache_config_file";
 alias vimvhosts="sudo vim $apache_vhosts_file";
 alias vima2="sudo vim -O $apache_config_file $apache_vhosts_file";
@@ -144,7 +147,10 @@ __php_aliases()
     php_config_file=`php -i | grep -i "loaded.*config.*file.*php.ini" | cut -d">" -f2 | sed "s/^ *//"`;
     php_error_log_file=`php -i | grep 'error_log =>' | sed 's/^\([^=]*\=\>\s*\)\([^=]*\).*$/\2/g'`;
 }
-__php_aliases
+if [ `which php` ]
+then
+    __php_aliases
+fi
 alias vimphp='sudo vim $php_config_file';
 alias tailphp='sudo tail -f $php_error_log_file';
 
