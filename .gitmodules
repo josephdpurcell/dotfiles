@@ -42,3 +42,15 @@
 	path = .vim/bundle/vdebug
 	url = https://github.com/joonty/vdebug.git
     ignore = dirty
+[submodule ".vim/bundle/vim-go"]
+	path = .vim/bundle/vim-go
+	url = https://github.com/fatih/vim-go.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-markdown"]
+	path = .vim/bundle/vim-markdown
+	url = https://github.com/tpope/vim-markdown.git
+    ignore = dirty
+[submodule ".vim/bundle/vim-php-namespace"]
+	path = .vim/bundle/vim-php-namespace
+	url = https://github.com/arnaud-lb/vim-php-namespace.git
+    ignore = dirty
