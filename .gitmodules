@@ -30,3 +30,11 @@
 	path = .vim/bundle/vim-gnupg
 	url = https://github.com/jamessan/vim-gnupg.git
     ignore = dirty
+[submodule ".vim/bundle/PHP-Indenting-for-VIm"]
+	path = .vim/bundle/PHP-Indenting-for-VIm
+	url = https://github.com/2072/PHP-Indenting-for-VIm.git
+    ignore = dirty
+[submodule ".vim/bundle/gundo"]
+	path = .vim/bundle/gundo
+	url = https://github.com/sjl/gundo.vim
+    ignore = dirty
