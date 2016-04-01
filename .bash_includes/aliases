@@ -67,7 +67,10 @@ __mysql5_aliases ()
         alias mysqltest_embedded=$path'/mysqltest_embedded5'
     fi
 }
-__mysql5_aliases
+if [ `which mysql &> /dev/null` ]
+then
+    __mysql5_aliases
+fi
 
 # Apache Shortcuts
 # Note: for these to work right, this assumes apachectl is in your PATH
@@ -97,7 +100,7 @@ __apache_aliases()
     fi
     apache_vhosts_file="$path/$vhosts";
 }
-if [ `which apachectl` ]
+if [ `which apachectl &> /dev/null` ]
 then
     __apache_aliases
 fi
@@ -147,7 +150,7 @@ __php_aliases()
     php_config_file=`php -i | grep -i "loaded.*config.*file.*php.ini" | cut -d">" -f2 | sed "s/^ *//"`;
     php_error_log_file=`php -i | grep 'error_log =>' | sed 's/^\([^=]*\=\>\s*\)\([^=]*\).*$/\2/g'`;
 }
-if [ `which php` ]
+if [ `which php &> /dev/null` ]
 then
     __php_aliases
 fi

@@ -99,21 +99,24 @@ fi
 #
 
 # Ruby Version Manager
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 
 # Show a fortune at login
 # http://fortunes.cat-v.org/
 # http://fortune.smithsforge.com/
-if [ -x /opt/local/bin/fortune ]
-then
-    /opt/local/bin/fortune -s
-fi
+#if [ -x /opt/local/bin/fortune ]
+#then
+#    /opt/local/bin/fortune -s
+#fi
 
-PERL_MB_OPT="--install_base \"/Users/joepurcell/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/joepurcell/perl5"; export PERL_MM_OPT;
+#PERL_MB_OPT="--install_base \"/Users/joepurcell/perl5\""; export PERL_MB_OPT;
+#PERL_MM_OPT="INSTALL_BASE=/Users/joepurcell/perl5"; export PERL_MM_OPT;
 
 # Allow CTRL+Q to pass to Vim.
-stty -ixon
+#stty -ixon
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
 
