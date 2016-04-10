@@ -469,11 +469,11 @@ let g:vdebug_options= {
 " phpcs
 "let g:phpqa_codesniffer_args = "--standard=PSR2"
 let g:phpqa_codesniffer_args = "--standard=Drupal"
-let g:phpqa_codesniffer_autorun = 1
+let g:phpqa_codesniffer_autorun = 0
 " phpmd
 let g:phpqa_messdetector_ruleset = 'phpmd_ruleset.xml'
-let g:phpqa_messdetector_autorun = 1
-let g:phpqa_open_loc = 1
+let g:phpqa_messdetector_autorun = 0
+let g:phpqa_open_loc = 0
 
 nnoremap <C-u> :GundoToggle<CR>
 
@@ -633,6 +633,8 @@ nnoremap <C-g><C-g> :GitGutterToggle<CR>
 " use C-n and C-p instead of C-j and C-k
 let NERDTreeMapJumpNextSibling="<C-n>"
 let NERDTreeMapJumpPrevSibling="<C-p>"
+" show hidden files
+let NERDTreeShowHidden=1
 
 " easy split navigation
 nnoremap <C-h> <C-w><C-h>
