@@ -41,8 +41,16 @@ if [ `uname -s` = 'Darwin' ]; then
     export PATH=/opt/local/apache2/bin:$PATH
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
     export PATH=/usr/local/mysql/bin:$PATH
-    export PATH=~/.composer/vendor/bin:$PATH
 fi
+
+if [ -d ~/.composer ]
+then
+    export PATH=~/.composer/vendor/bin:$PATH
+elif [ -d ~/.config/composer ]
+then
+    export PATH=~/.config/composer/vendor/bin:$PATH
+fi
+
 # If you use android emulator:
 #export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
 
