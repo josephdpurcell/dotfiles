@@ -6,3 +6,9 @@
 .ctags
 .DS_Store
 cscope.*
+!.config/
+.config/*
+!.config/composer/
+.config/composer/*
+!.config/composer/composer.json
+!.config/composer/composer.lock
