@@ -1,3 +1,8 @@
+function __relink () {
+    rm $1
+    ln -s $2 $1
+}
+alias relink='__relink'
 
 function __mysqlimport ()
 {
@@ -579,4 +584,3 @@ else
     }
 fi
 complete -F _completemarks jump unmark
-

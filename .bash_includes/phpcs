@@ -1,0 +1,1 @@
+#phpcs --config-set installed_paths "/home/joep/.config/composer/vendor/drupal/coder/coder_sniffer,/home/joep/.config/composer/vendor/wp-coding-standards/wpcs,/home/joep/.config/composer/vendor/yiisoft/yii2-coding-standards,/home/joep/.config/composer/vendor/magento/marketplace-eqp"

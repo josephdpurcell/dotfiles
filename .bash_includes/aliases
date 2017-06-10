@@ -189,6 +189,7 @@ else
     alias lss='ls -lhas'
     alias lcs='ls -lham'
     alias lm='find ./ -type f -maxdepth 1 -printf "%TY-%Tm-%Td %TT %p\n" | sort -r'
+    alias lm='ls -lha -tr'
 fi
 alias fancyfind='echo "find ./ -maxdepth 4 -name <directory> | while read f; do grep -Rn <query> $f/config; done;"'
 # list files you cannot write to; default is maxdepth has no limit

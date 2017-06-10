@@ -62,6 +62,8 @@ export APPLICATION_ENV='development'
 export ENVIRONMENT='development'
 export HISTFILESIZE=20000000
 export HISTSIZE=100000
+# Support cloning Drupal.org repos.
+export GIT_SSH_COMMAND='ssh -o KexAlgorithms=+diffie-hellman-group1-sha1'
 
 # have grep highlight words found
 # NOTE: deprecated on linux??
@@ -123,8 +125,13 @@ export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 #PERL_MM_OPT="INSTALL_BASE=/Users/joepurcell/perl5"; export PERL_MM_OPT;
 
 # Allow CTRL+Q to pass to Vim.
-#stty -ixon
+stty -ixon
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
+VAGRANT_DEFAULT_PROVIDER='virtualbox'
+
+# Set key delay and key repeat 
+# Format: <delay> <repeat>
+xset r rate 200 60

@@ -34,6 +34,9 @@ noremap <Leader>u :call PhpInsertUse()<CR>
 inoremap <Leader>e <C-O>:call PhpExpandClass()<CR>
 noremap <Leader>e :call PhpExpandClass()<CR>
 
+autocmd FileType php inoremap <Leader>s <Esc>:call PhpSortUse()<CR>
+autocmd FileType php noremap <Leader>s :call PhpSortUse()<CR>
+
 " =========================================================
 " KEY BINDINGS AND SHORTCUTS:
 " Reference: http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_%28Part_2%29
@@ -53,6 +56,8 @@ map <S-d> Da
 
 "nmap dw bde
 nmap dw bcw
+
+set nohlsearch
 
 "
 " == Compiling and Executing ==
@@ -336,6 +341,12 @@ autocmd BufNewFile,BufReadPost *.md set spell
 
 autocmd BufRead,BufNewFile COMMIT_EDITMSG set filetype=gitcommit spell
 
+" PHP - Drupal
+au BufRead,BufNewFile *.theme set filetype=php
+au BufRead,BufNewFile *.module set filetype=php
+au BufRead,BufNewFile *.include set filetype=php
+au BufRead,BufNewFile *.install set filetype=php
+
 " https://github.com/leafgarland/typescript-vim
 au BufRead,BufNewFile *.ts set filetype=typescript
 
@@ -355,6 +366,24 @@ au BufRead,BufNewFile *.html set ts=2 sw=2 sts=2 cino=>2 et
 nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 "set fileformats=unix,mac,dos
+
+
+
+" Syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_yaml_checkers=['yamllint']
+" @todo switch from using phpmd/phpcs to using syntastic for lint
+let g:syntastic_php_checkers=[]
+
+
 
 "" Reference: http://amix.dk/blog/post/19571
 "function! GitBranch()
@@ -454,7 +483,8 @@ let g:vdebug_options= {
 \    "break_on_open" : 1,
 \    "ide_key" : '',
 \    "path_maps" : {
-\        "/var/www/dev1.d8.local/web": "/Users/joepurcell/src/sites/dev1.d8.local/web"
+\        "/var/www/dev1.d8.local/web": "/Users/joepurcell/src/sites/dev1.d8.local/web",
+\        "/var/www/sites.local/d8/docroot": "/home/joep/src/sites/sites.local/d8/docroot"
 \    },
 \    "debug_window_level" : 0,
 \    "debug_file_level" : 0,
@@ -469,11 +499,11 @@ let g:vdebug_options= {
 " phpcs
 "let g:phpqa_codesniffer_args = "--standard=PSR2"
 let g:phpqa_codesniffer_args = "--standard=Drupal"
-let g:phpqa_codesniffer_autorun = 0
+let g:phpqa_codesniffer_autorun = 1
 " phpmd
-let g:phpqa_messdetector_ruleset = 'phpmd_ruleset.xml'
-let g:phpqa_messdetector_autorun = 0
-let g:phpqa_open_loc = 0
+let g:phpqa_messdetector_ruleset = "~/phpmd_drupal.xml"
+let g:phpqa_messdetector_autorun = 1
+let g:phpqa_open_loc = 1
 
 nnoremap <C-u> :GundoToggle<CR>
 
@@ -675,3 +705,5 @@ set ssop-=options    " do not store global and local values in a session
 "set listchars=tab:>.,trail:.,extends:#,nbsp:.
 " allow tabs in html and xml
 "autocmd filetype html,xml set listchars-=tab:>.
+
+let g:feature_filetype='behat'

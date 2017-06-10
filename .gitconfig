@@ -3,11 +3,11 @@
 	email = josephdpurcell@gmail.com
 [core]
     quotepath = false
-    autocrlf = input
-	path = /Applications/Xcode.app/Contents/Developer/usr/libexec/git-core
-	excludesfile = /Users/joepurcell/.gitignore
+	autocrlf = input
+	path = /usr/libexec/git-core
+	excludesfile = /home/joep/.gitignore
 [alias]
-    st = status
+    st = status -sb
     ci = commit
     br = branch
     co = checkout
@@ -56,6 +56,9 @@
     # See how much work I did to make me feel good:
     # git log --numstat --pretty="%H" --author="Joseph" 1f28eb37c8beba80e2a3f314c7193f68b2bbb046..04290eafa4e685a2072fbd6672da39c0d581b7a5 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("+%d, -%d\n", plus, minus)}'
     # Source: http://stackoverflow.com/a/2528129
+    branch-owners = "!f() { git for-each-ref --format='%(committerdate) %09 %(authorname) %09 %(refname)' | sort -k5n -k2M -k3n -k4n; }; f"
+    # Source: http://stackoverflow.com/a/25815116/990642
+    reset-authors = "!f() { if [[ -z $1 ]]; then echo \"You must specify a hash to reset all commits from HEAD to that commit:\n$ git reset-author cbcc732\"; else env git rebase -i \"$1\" -x \"git commit --amend --reset-author -CHEAD\"; fi }; f"
 [color]
     ui = true
 # tips: http://shallowsky.com/blog/programming/gitcolors.html
@@ -71,7 +74,5 @@
 	rebase = true
 [merge]
 	ff = false
-[remote "origin"]
-	receivepack = git receive-pack
 [push]
 	default = matching

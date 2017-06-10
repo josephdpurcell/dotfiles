@@ -12,3 +12,4 @@ cscope.*
 .config/composer/*
 !.config/composer/composer.json
 !.config/composer/composer.lock
+.idea
