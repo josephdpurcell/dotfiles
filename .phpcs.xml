@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
 <ruleset name="PSR-2">
-  <description>Palantir PSR-2</description>
-  <exclude-pattern>*/tests/*</exclude-pattern>
-  <exclude-pattern>*/data/*</exclude-pattern>
-  <rule ref="PSR2"/>
+  <rule ref="Drupal"/>
 </ruleset>

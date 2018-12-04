@@ -6,6 +6,7 @@
 	autocrlf = input
 	path = /usr/libexec/git-core
 	excludesfile = /home/joep/.gitignore
+	fileMode = false
 [alias]
     st = status -sb
     ci = commit
@@ -21,6 +22,7 @@
     type = cat-file -t
     dump = cat-file -p
     unstage = reset HEAD
+    rl = reflog --date=iso
     wc = whatchanged
     tg = tag -n1
     tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo \"\"; git for-each-ref $c --format=${c:10}' %(subject)'; git log -1 --pretty=short \"$c\"; done }; f"

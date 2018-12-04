@@ -234,7 +234,7 @@ Example:
     $ passgen -m 64 -M NCL
 
 Generating 6 passwords 32 characters long:
-"; apg -M SNCL -m 32'
+"; apg -a 1 -M SNCL -m 32'
 #alias passgen='apg -M SNCL -m'
 alias reloadbashrc='source ~/.bashrc'
 alias reloadbash='source ~/.bashrc'
@@ -270,7 +270,7 @@ alias im_exampleimage='convert -background "#223099" -fill "#FF8800" -pointsize 
 alias im_converttopdf='echo "Run:";echo "convert -page letter example.png -resize 500x -gravity North -format pdf example.pdf"'
 # ref: https://gist.github.com/khakimov/3558086
 # raw: echo -e "\e[1;40m" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
-alias matrix="echo -e \"\e[1;40m\" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters=\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()\"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf \"\033[%s;%sH\033[2;32m%s\",o,x,letter; printf \"\033[%s;%sH\033[1;37m%s\033[0;0H\",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'"
+#alias matrix="echo -e \"\e[1;40m\" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters=\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()\"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf \"\033[%s;%sH\033[2;32m%s\",o,x,letter; printf \"\033[%s;%sH\033[1;37m%s\033[0;0H\",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'"
 alias matrix='cmatrix'
 # I love this one:
 alias vimwip='vim -O $(git diff --name-only | sort | uniq)'

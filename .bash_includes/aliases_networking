@@ -57,6 +57,10 @@ alias catudpport='echo -e "On the server run:\n$ nc -u -l 88\nThen, on the clien
 alias tcpdump_dns='sudo tcpdump -i en1 "udp port 53"'
 alias tcpdump_http='sudo tcpdump -i en1 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)"';
 alias tcpdump_smtp='sudo tcpdump -i en0 tcp port 25';
+alias tcpdump_http_nonack="tcpdump -nnvi any 'tcp port 80 and (tcp[tcpflags] & tcp-ack == 0)'"
+alias tcpdump_https_nonack="tcpdump -nnvi any 'tcp port 443 and (tcp[tcpflags] & tcp-ack == 0)'"
+# all packets:
+# tcpdump -i any -nnASs 0 'port 80'
 
 # iptables
 alias iptl='iptables --list --line-numbers --numeric'
@@ -68,3 +72,8 @@ alias c="curl -s --dump-header /dev/stderr"
 # Tunnel 127.0.0.1 8080 to route through the current vagrant machine via SSH.
 # e.g. if vagrant machine has a VPN, you can use this to SOCK5 proxy a browser through the vagrant machine's vpn
 alias tunnelvagrant="ssh \$(vagrant ssh-config | awk '{print \" -o \"\$1\"=\"\$2}') -CND 8080 localhost"
+
+
+# Ubuntu 16.04 wifi doesn't work:
+# sudo ifconfig wlp4s0 up
+# service network-manager restart

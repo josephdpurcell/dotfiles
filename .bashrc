@@ -134,4 +134,7 @@ VAGRANT_DEFAULT_PROVIDER='virtualbox'
 
 # Set key delay and key repeat 
 # Format: <delay> <repeat>
+# Fast:
 xset r rate 200 60
+# Slow:
+#xset r rate 660 25
