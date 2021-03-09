@@ -4,10 +4,14 @@
 [core]
     quotepath = false
 	autocrlf = input
-	path = /usr/libexec/git-core
-	excludesfile = /home/joep/.gitignore
+	path = /Library//Developer/CommandLineTools/usr/libexec/git-core
+	excludesfile = /Users/joepurcell/.gitignore
 	fileMode = false
 [alias]
+    alias = config --global --get-regexp ^alias
+    blameconflict = blame -L '/^<<<</,/^>>>>/'
+    last = for-each-ref --sort=authordate --format '%(authordate:iso) %(align:left,25)%(refname:short)%(end) %(subject)'
+    gh = "!f() { if [[ -z $1 || -z $2 ]]; then echo \"You must specify PR ID and branch name.\"; elif [[ -f \".git/refs/heads/$2\" ]]; then echo \"The branch $2 already exists.\"; else git fetch origin pull/$1/head:$2 && git checkout $2; fi }; f"
     st = status -sb
     ci = commit
     br = branch
@@ -24,7 +28,7 @@
     unstage = reset HEAD
     rl = reflog --date=iso
     wc = whatchanged
-    tg = tag -n1
+    tg = tag -n1 --sort=v:refname
     tgg = "!f() { for c in $(git for-each-ref refs/tags/ --format='%(refname)'); do echo \"\"; git for-each-ref $c --format=${c:10}' %(subject)'; git log -1 --pretty=short \"$c\"; done }; f"
     l = log --oneline
     ll = log
@@ -77,4 +81,4 @@
 [merge]
 	ff = false
 [push]
-	default = matching
+	default = current

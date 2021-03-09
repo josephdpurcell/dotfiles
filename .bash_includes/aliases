@@ -181,7 +181,7 @@ if [ `uname -s` = 'Darwin' ]; then
     alias laa='ls -A1G'
     alias lss='ls -lhasG'
     alias lcs='ls -lhamG'
-    alias lm='stat -f "%m%t%Sm %N" /tmp/* | sort -rn | cut -f2-'
+    alias lm='ls -lha -tr'
 else
     alias ll='ls -lha'
     alias la='ls -1'
@@ -217,25 +217,62 @@ lsw ()
     IFS=$oIFS
 }
 alias lsproc='sudo netstat -tulpn'
+alias psgrep='ps aux | grep'
+alias fx="firefox --new-instance --profile $(mktemp -d)"
+
+# GREP aliases.
 alias grep='grep -i' # ignore case by default
 alias grepr='grep -Rn' # recursive grep and show line number
 alias grepl='grep -Rl'
-alias psgrep='ps aux | grep'
-alias passgen='echo "Options:
-    -m Length of password
-    -n Number of passwords
-    -M Allowed characters:
-        [S]pecial
-        [N]umeral
-        [C]apital
-        [L]etter small
+function gc() { grep -rnI "$@" * ;}
+function gcA() { grep -rnI -A 5 "$@" * ;}
+function gcB() { grep -rnI -B 5 "$@" * ;}
+function gcC() { grep -rnI -C 5 "$@" * ;}
+function gcf() { grep -rnIl "$@" * ;}
 
-Example:
-    $ passgen -m 64 -M NCL
+alias histstats="history | awk '{CMD[\$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v './' | column -c3 -s ' ' -t | sort -nr | nl | head -n10"
+# Show time in history list.
+export HISTTIMEFORMAT="%d/%m/%y %T "
 
-Generating 6 passwords 32 characters long:
-"; apg -a 1 -M SNCL -m 32'
+passgen ()
+{
+  echo "Options:
+      -N Number of passwords
+      -y Special characters
+      -n Numerals
+      -c Captials
+  
+  Example:
+      $ passgen 32 -y -n -c -N 6
+  
+  See "man pwgen" for more details.
+
+";
+  if [[ -z $@ ]]
+  then
+    echo "  Generating 6 passwords 32 characters long:"
+    pwgen 32 -1 -y -n -c -N 6
+  else
+    pwgen -1 "$@"
+  fi
+}
+# Note: apg is no longer supported
+#alias passgen='echo "Options:
+#    -m Length of password
+#    -n Number of passwords
+#    -M Allowed characters:
+#        [S]pecial
+#        [N]umeral
+#        [C]apital
+#        [L]etter small
+#
+#Example:
+#    $ passgen -m 64 -M NCL
+#
+#Generating 6 passwords 32 characters long:
+#"; apg -a 1 -M SNCL -m 32'
 #alias passgen='apg -M SNCL -m'
+
 alias reloadbashrc='source ~/.bashrc'
 alias reloadbash='source ~/.bashrc'
 # reference: http://linuxcommando.blogspot.com/2007/10/dictionary-lookup-via-command-line.html
@@ -297,12 +334,27 @@ alias vimindex='echo "todo: make cscope realtive"; ctags; find `pwd` -name "*.ph
 alias vimindexjs='ctags'
 alias vimindexcs='echo "todo: make cscope realtive"; ctags; find "`pwd`" -name "*.cs" -exec echo \"{}\" \; > cscope.files; cscope -b -q -k -R'
 
+# MK shortcuts.
+# Make a directory and cd into it.
+mkcd() {
+  mkdir -p "$*"
+  cd "$*"
+}
+
+# Make and/or cd directory with a date
+alias mkd='mkdir $(date "+%Y-%m-%d")'
+alias cdd='cd $(date "+%Y-%m-%d")'
+
 # CD shortcuts
+alias cdl="ls -ltr | grep '^d' | tail -1 | awk '{print $9}'"
 alias cdbin='cd /usr/local/bin;pwd'
 alias cdrepos='cd /usr/local/share;pwd'
 alias cdlib='cd /usr/local/lib;pwd'
 alias cdmount='cd /opt/mount;pwd'
 alias cdvim='cd ~/.vim/'
+alias cdgit='git rev-parse --git-dir >/dev/null 2>&1 && cd `git rev-parse --show-toplevel` || echo "Not in git repo"'
+alias ,,=cdgit
+alias ~="cd ~"
 alias ..='cd ..' # source: http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_05.html
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -327,3 +379,15 @@ alias cdg='cd ~/src/github.com'
 # alias sshsrv='ssh user@user-desktop'
 alias sshl='alias | grep "alias ssh.*=" | grep -v "alias sshl="'
 
+
+# Calculator CLI
+calc () {
+  bc -l <<< "$@"
+}
+
+# Allow sudo with aliases.
+alias sudo='sudo '
+
+if [ `uname -s` = 'Darwin' ]; then
+  alias sleepnow="pmset sleepnow"
+fi

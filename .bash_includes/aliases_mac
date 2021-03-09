@@ -1,6 +1,10 @@
 # .aliases_mac
 #
 # Aliases for mac
+# @see https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/
+# @see https://github.com/pawelgrzybek/dotfiles/blob/master/setup-macos.sh
+#
+# Note: Specify the global domain. '-g' and '-globalDomain' may be used as synonyms for NSGlobalDomain.
 
 # Mac OS X
 if [ `uname -s` = 'Darwin' ]; then
@@ -28,5 +32,50 @@ if [ `uname -s` = 'Darwin' ]; then
     alias mkramdisk='diskutil erasevolume HFS+ "RAM disk" `hdiutil attach -nomount ram://4629672`'
     # If Airplay doesn't work, kill the audio to restart it and it will work.
     alias killaudio='sudo killall coreaudiod'
+
+
+    function heic2jpeg() {
+      for x in *.HEIC
+      do
+        _name="${x%.HEIC}"
+        sips -s format jpeg $x --out "$_name.jpg"
+      done
+    }
+    
+    # Enable auto-hide dock.
+    # defaults write com.apple.dock autohide -bool true
+    # Reduce the animation transition time to 0, so it looks instant.
+    # defaults write com.apple.dock autohide-time-modifier -float 0
+    # Delay opening the dock to a full 2 seconds; for the user to use OPT + CMD + D to show/hide.
+    # defaults write com.apple.dock autohide-delay -float 2
+    # Note: be certain to run "killall Dock" after each change.
+
+
+    ###disable special characters when holding keys
+    #defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+    # ========== KEY REPEAT ==========
+    # Default values:
+    #$  defaults read -g InitialKeyRepeat
+    #300000
+    #$ defaults read -g KeyRepeat
+    #2
+    #
+    # The step values that correspond to the sliders on the GUI are as follow (lower equals faster):
+    # InitialKeyRepeat: 120, 94, 68, 35, 25, 15 (default is 15, 225 ms)
+    # KeyRepeat: 120, 90, 60, 30, 12, 6, 2 (default is 2, 30 ms)
+    # Lower values are slower values for InitialKeyRepeat. Opposite for
+    # KeyRepeat, lower is faster.
+    # @see https://rehmann.co/blog/better-key-rates-osx/
+    #
+    # My settings:
+    # InitialKeyRepeat of 10 and KeyRepeat of 10 is OK. The initial key repeat
+    # is a little too fast. Previously I had InitialKeyRepeat of 15 and
+    # KeyRepeat of 2.
+    #defaults write -g InitialKeyRepeat -float 15.0
+    #defaults write NSGlobalDomain InitialKeyRepeat -float 15.0
+    #defaults write -g KeyRepeat -float 1.0
+    #defaults write NSGlobalDomain KeyRepeat -float 1.0
+
 fi
 

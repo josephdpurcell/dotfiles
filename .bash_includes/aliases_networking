@@ -2,11 +2,19 @@
 #
 alias telnet_https='openssl s_client -connect stmts.chase.com:443'
 # Note: "ping" is an alias on Fedora, so it won't retry by default
-alias ping8='/bin/ping -O 8.8.8.8'
-alias pingg='/bin/ping -O www.google.com'
+# For linux:
+#alias ping8='/bin/ping -O 8.8.8.8'
+#alias pingg='/bin/ping -O www.google.com'
+# For Mac:
+alias ping8='ping 8.8.8.8'
+alias pingg='ping www.google.com'
 function digall() {
-    dig +nocmd $@ any +multiline +noall +answer
+    dig +nocmd $@ any +multiline +all +answer
 }
+
+# What is my public ip?
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ipinfo="curl 'http://ipinfo.io'"
 
 # Finding IPs
 alias lsip='arp -a'
@@ -61,6 +69,9 @@ alias tcpdump_http_nonack="tcpdump -nnvi any 'tcp port 80 and (tcp[tcpflags] & t
 alias tcpdump_https_nonack="tcpdump -nnvi any 'tcp port 443 and (tcp[tcpflags] & tcp-ack == 0)'"
 # all packets:
 # tcpdump -i any -nnASs 0 'port 80'
+alias listenforpwd="sudo tcpdump port http or port ftp or port smtp or port imap or port pop3 or port telnet -lA | egrep -i -B5 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user '"
+alias listenforuseragent="sudo tcpdump -vvAls0 | grep 'User-Agent:'"
+alias listenforgetreq="sudo tcpdump -vvAls0 | grep 'GET'"
 
 # iptables
 alias iptl='iptables --list --line-numbers --numeric'
@@ -68,6 +79,12 @@ alias iptl='iptables --list --line-numbers --numeric'
 # Always print headers
 # Source: http://attilaolah.eu/2014/12/18/my-curl-alias/
 alias c="curl -s --dump-header /dev/stderr"
+#curl  -ksD /dev/stdout -o /dev/null "https://example.com"
+#-s = silent
+#-L = location
+#-I = head
+#-XGET = request GET
+#curl -sLIXGET https://example.com/
 
 # Tunnel 127.0.0.1 8080 to route through the current vagrant machine via SSH.
 # e.g. if vagrant machine has a VPN, you can use this to SOCK5 proxy a browser through the vagrant machine's vpn
@@ -77,3 +94,27 @@ alias tunnelvagrant="ssh \$(vagrant ssh-config | awk '{print \" -o \"\$1\"=\"\$2
 # Ubuntu 16.04 wifi doesn't work:
 # sudo ifconfig wlp4s0 up
 # service network-manager restart
+
+
+#
+#function certchain() {
+## Usage: certchain
+## Display PKI chain-of-trust for a given domain
+## GistID: https://gist.github.com/joshenders/cda916797665de69ebcd
+#if [[ "$#" -ne 1 ]]; then
+#echo "Usage: ${FUNCNAME} <ip|domain[:port]>"
+#return 1
+#fi
+#
+#local host_port="$1"
+#
+#if [[ "$1" != *:* ]]; then
+#local host_port="${1}:443"
+#fi
+#
+#openssl s_client -connect "${host_port}" </dev/null 2>/dev/null | grep -E '\ (s|i):'
+#}
+
+if [ `uname -s` = 'Darwin' ]; then
+  alias netstat_tanp="lsof -Pnl +M -i4 -i6"
+fi

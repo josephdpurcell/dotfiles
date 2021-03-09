@@ -13,6 +13,9 @@ map <C-q> :q<CR>
 " allow ctrl+q to pass to vim:
 "silent !stty -ixon > /dev/null 2>/dev/null
 
+" useful way to insert 50 random passwords
+" ::for i in range(1,50) | put =i.' '.system('pwgen 32 -1 -y -n -c -N 1') | endfor
+
 " =========================================================
 " PLUGINS:
 " =========================================================
@@ -109,7 +112,11 @@ map @ps :%!phpcs --standard="$HOME/.phpcs.xml" %<cr>
 " PHP Beautify a pasted PHP array
 map @pa = :'<,'>s;\(\[[0-9]*\] => \)\?Array\s*\n\s*(;array(;g<cr>:'<,'>s;\[\([^\]]*\)\] => \(.*\)$;'\1' => '\2',;g<cr>:'<,'>s;,\n\(\s*\))\n^\n;\r\1),\r;g<cr>:'<,'>s;),\n\(\s*\));)\r\1);g<cr>
 " lint AND auto-format XML document (THIS ONE IS MAGICAL!!!)
-let @x = ":%!xmllint --format %\n"
+"let @x = ":%!xmllint --format %\n"
+" Note: -file /dev/null means to print errors and warnings to /dev/null
+let @x = ":%!tidy -xml -quiet -indent -file /dev/null - %\n"
+"tidy --show-body-only yes -i 4 -w 80 -m asdf.html
+"tidy --indent auto --quiet yes --show-body-only auto --show-errors 0 --wrap 0 input.html
 " lint CSS (THIS ONE IS MAGICAL!!!) http://csslint.net/
 " alt: https://npmjs.org/package/PrettyCSS
 let @c = ":%!csslint --ignore=ids,important,box-model,compatible-vendor-prefixes,adjoining-classes,qualified-headings %\n"
@@ -128,7 +135,8 @@ map @jj :%!js-beautify %<cr>
 ":map @jm :%!yuicompress -s %<cr>
 map @jm :%!uglifyjs %<cr>
 " lint AND auto-format JSON document (THIS ONE IS MAGICAL!!!)
-"let @s = ":%!jsonlint %\n"
+"let @s = ":%!jsonlint '%'\n"
+let @s = ":%!jshon '%'\n"
 " source: http://visibletrap.blogspot.de/2010/05/vim-how-to-format-and-syntax-highlight.html
 "map <leader>jt  <Esc>:%!json_pp -f json -t json<CR>
 "map @s <Esc>:%!json_pp -f json -t json<CR>
@@ -137,10 +145,11 @@ map @jm :%!uglifyjs %<cr>
 " Note: this sorts keys
 "map @s <Esc>:%!python -m json.tool<CR>
 " source: http://www.skorks.com/2013/04/the-best-way-to-pretty-print-json-on-the-command-line/
-map @s <Esc>:%!json_reformat<CR>
-map @sm :%!json_reformat -m<cr>
+"map @s <Esc>:%!json_reformat<CR>
+"map @sm :%!json_reformat -m<cr>
 " alt:
 "map @sm :%!jq --compact-output . %<cr>
+map @sm :%!jshon .<cr>
 
 "
 " == Code Inserts and Helpers ==
@@ -367,12 +376,11 @@ nnoremap ,m :w <BAR> !lessc % > %:t:r.css<CR><space>
 
 "set fileformats=unix,mac,dos
 
-
-
+" @todo figure this out without modifying the ruler
 " Syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1

@@ -41,6 +41,13 @@ if [ `uname -s` = 'Darwin' ]; then
     export PATH=/opt/local/apache2/bin:$PATH
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
     export PATH=/usr/local/mysql/bin:$PATH
+
+
+    if [ -d "$HOME/src/github.com/josephdpurcell/git-extras/bin" ]
+    then
+	export PATH="$HOME/src/github.com/josephdpurcell/git-extras/bin:$PATH"
+    fi
+
 fi
 
 if [ -d ~/.composer ]
@@ -50,6 +57,7 @@ elif [ -d ~/.config/composer ]
 then
     export PATH=~/.config/composer/vendor/bin:$PATH
 fi
+export COMPOSER_MEMORY_LIMIT=4096M
 
 # If you use android emulator:
 #export PATH=$PATH:/usr/local/bin/android-sdk-macosx/tools
@@ -60,10 +68,20 @@ fi
 
 export APPLICATION_ENV='development'
 export ENVIRONMENT='development'
-export HISTFILESIZE=20000000
-export HISTSIZE=100000
 # Support cloning Drupal.org repos.
 export GIT_SSH_COMMAND='ssh -o KexAlgorithms=+diffie-hellman-group1-sha1'
+
+# Share session history across terminals.
+#export SHELL_SESSION_HISTORY=0
+# Save a VERY large history.
+export HISTFILESIZE=20000000
+export HISTSIZE=100000
+# Avoid duplicates
+#export HISTCONTROL=ignoredups:erasedups
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
+# Save and reload the history after each command finishes
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # have grep highlight words found
 # NOTE: deprecated on linux??
@@ -132,9 +150,18 @@ stty -ixon
 
 VAGRANT_DEFAULT_PROVIDER='virtualbox'
 
-# Set key delay and key repeat 
+# Set key delay and key repeat (Ubuntu)
 # Format: <delay> <repeat>
 # Fast:
-xset r rate 200 60
+#xset r rate 200 60
 # Slow:
 #xset r rate 660 25
+
+
+# Fix ssh on Mac
+if [ `uname -s` = 'Darwin' ]
+then
+    # Note: this assumes naming format is id_{client}_rsa
+    ssh-add ~/.ssh/id*_rsa &> /dev/null
+fi
+
